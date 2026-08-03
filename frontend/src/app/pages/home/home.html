@@ -45,7 +45,8 @@
 
   <div class="mb-4">
 
-    <button class="btn btn-primary">
+    <button class="btn btn-primary"
+            (click)="showCreateModal=true">
 
       <i class="bi bi-plus-lg"></i>
 
@@ -85,5 +86,17 @@
   </div>
 
 
+  @if(showCreateModal){
+
+    <app-create-group-modal
+
+      (close)="showCreateModal=false"
+
+      (created)="groupCreated()"
+
+    ></app-create-group-modal>
+
+  }
 
 </div>
+

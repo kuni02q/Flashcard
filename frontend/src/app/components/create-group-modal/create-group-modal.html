@@ -1,0 +1,114 @@
+<div class="modal-backdrop">
+
+
+  <div class="modal-box">
+
+    <h3>
+      Új csoport létrehozása
+    </h3>
+
+    <label>
+      Név
+    </label>
+
+    <input
+      class="form-control mb-3"
+      [(ngModel)]="name"
+    >
+
+    <label>
+      Leírás
+    </label>
+
+
+    <textarea
+      class="form-control mb-3"
+      [(ngModel)]="description">
+    </textarea>
+
+
+
+    <label>
+      Forrás nyelv
+    </label>
+
+
+    <div class="position-relative" (click)="stopPropagation($event)">
+
+      <input
+        class="form-control"
+        placeholder="Keresés..."
+        [(ngModel)]="sourceSearch"
+        (focus)="openSourceDropdown()"
+      >
+
+      @if(sourceDropdownOpen){
+
+        <div class="language-list">
+
+          @for(language of filteredSourceLanguages; track language.id){
+
+            <div class="language-item" (click)="selectSourceLanguage(language)">
+              {{language.name}}
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+
+
+    <label>
+      Cél nyelv
+    </label>
+
+
+    <div class="position-relative" (click)="stopPropagation($event)">
+
+      <input
+        class="form-control"
+        placeholder="Keresés..."
+        [(ngModel)]="targetSearch"
+        (focus)="openTargetDropdown()"
+      >
+
+      @if(targetDropdownOpen){
+
+        <div class="language-list">
+
+          @for(language of filteredTargetLanguages; track language.id){
+
+            <div class="language-item" (click)="selectTargetLanguage(language)">
+              {{language.name}}
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+
+
+    <div class="text-end mt-4">
+
+      <button class="btn btn-secondary me-2" (click)="cancel()">
+        Mégse
+      </button>
+
+      <button class="btn btn-primary" (click)="create()">
+        Létrehozás
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>

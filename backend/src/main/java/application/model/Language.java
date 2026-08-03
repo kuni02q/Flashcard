@@ -3,6 +3,7 @@ package application.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +22,13 @@ public class Language {
     private String name;
 
     @OneToMany(mappedBy = "sourceLanguage")
-    private List<DictionaryGroup> sourceGroups;
+    @Builder.Default
+    private List<DictionaryGroup> sourceGroups = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "targetLanguage")
-    private List<DictionaryGroup> targetGroups;
+    @Builder.Default
+    private List<DictionaryGroup> targetGroups = new ArrayList<>();
 
 
 }

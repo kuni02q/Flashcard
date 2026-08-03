@@ -24,6 +24,11 @@ export class DictionaryGroupService {
 
   }
 
+  createGroup(data:any){
+
+    return this.http.post(this.api, data);
+
+  }
 
   deleteGroup(id:number){
     return this.http.delete(`${this.api}/${id}`);

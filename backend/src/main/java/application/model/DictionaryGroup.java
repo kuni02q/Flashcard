@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,7 +51,8 @@ public class DictionaryGroup {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<WordPair> words;
+    @Builder.Default
+    private List<WordPair> words = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

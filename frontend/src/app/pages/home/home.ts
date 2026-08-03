@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {GroupCard} from '../../components/group-card/group-card';
 import {DictionaryGroupCard} from '../../core/models/dictionary-group-card';
 import {DictionaryGroupService} from '../../core/services/dictionary-group.service';
+import {CreateGroupModal} from '../../components/create-group-modal/create-group-modal';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [GroupCard],
+  imports: [GroupCard, CreateGroupModal],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -14,7 +15,9 @@ export class Home implements OnInit {
 
   groups:DictionaryGroupCard[] = [];
 
-  constructor(private groupService:DictionaryGroupService){}
+  showCreateModal=false;
+
+  constructor(private groupService:DictionaryGroupService, private cdr:ChangeDetectorRef) {}
 
 
   ngOnInit(){
@@ -32,6 +35,8 @@ export class Home implements OnInit {
 
         next:data=>{
           this.groups=data;
+
+          this.cdr.markForCheck();
         },
 
 
@@ -45,6 +50,15 @@ export class Home implements OnInit {
 
   }
 
+
+  groupCreated(){
+
+    this.showCreateModal=false;
+
+    this.loadGroups();
+
+
+  }
 
 
   deleteGroup(id:number){
@@ -64,8 +78,13 @@ export class Home implements OnInit {
             x=>x.id!==id
           );
 
+        this.cdr.markForCheck();
+
       });
 
 
   }
+
+
+
 }

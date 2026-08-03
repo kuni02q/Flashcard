@@ -78,7 +78,7 @@ export class RegisterForm {
             this.errorMessage = 'Sikertelen regisztráció!';
           }
 
-          this.cdr.detectChanges();
+          this.cdr.markForCheck();
 
         }
 

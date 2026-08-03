@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -53,10 +54,11 @@ public class DictionaryGroupMapper {
 
                 languageMapper.toResponse(group.getTargetLanguage()),
 
-                group.getWords()
-                        .stream()
-                        .map(wordPairMapper::toResponse)
-                        .collect(Collectors.toList())
+                group.getWords() == null ? List.of():
+                        group.getWords()
+                            .stream()
+                            .map(wordPairMapper::toResponse)
+                            .collect(Collectors.toList())
 
         );
 

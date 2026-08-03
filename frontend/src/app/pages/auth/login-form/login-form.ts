@@ -42,7 +42,7 @@ export class LoginForm {
           console.error(err);
           this.loginError = true;
 
-          this.cdr.detectChanges();
+          this.cdr.markForCheck();
 
         }
       });
