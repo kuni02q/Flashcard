@@ -31,6 +31,8 @@ public class DictionaryGroup {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime lastUsedAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

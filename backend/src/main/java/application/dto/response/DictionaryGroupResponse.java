@@ -31,6 +31,8 @@ public class DictionaryGroupResponse {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime lastUsedAt;
+
 
     private UserResponse user;
 

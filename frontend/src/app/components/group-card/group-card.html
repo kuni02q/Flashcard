@@ -1,0 +1,95 @@
+<div class="card shadow-sm h-100">
+
+
+  <div class="card-body">
+
+    <h3 class="fw-bold">
+      {{group.name}}
+    </h3>
+
+
+    <p class="text-muted">
+      {{group.description}}
+    </p>
+
+    <hr>
+
+    <p>
+      <i class="bi bi-translate"></i>
+
+      {{group.sourceLanguage}}
+
+      -
+
+      {{group.targetLanguage}}
+    </p>
+
+
+
+    <p>
+      <i class="bi bi-book"></i>
+
+      Szópárok:
+
+      {{group.wordCount}}
+    </p>
+
+
+
+    <p>
+      <i class="bi bi-check-circle"></i>
+
+      Memorizált:
+
+      {{group.learnedWordCount}}
+
+      /
+
+      {{group.wordCount}}
+    </p>
+
+
+
+    <div class="progress mb-3">
+      <div
+        class="progress-bar"
+        [style.width.%]="learnedPercent">
+
+        {{learnedPercent}}%
+
+      </div>
+    </div>
+
+
+
+    <p>
+      <i class="bi bi-clock"></i>
+
+
+      Utoljára:
+
+      @if(group.lastUsedAt){
+
+        {{group.lastUsedAt | date:'yyyy.MM.dd'}}
+
+      }
+      @else {
+
+        Még nem használva
+
+      }
+    </p>
+
+
+    <button
+      class="btn btn-outline-danger btn-sm float-end"
+      (click)="deleteGroup()">
+
+      <i class="bi bi-trash"></i>
+    </button>
+
+
+  </div>
+
+
+</div>

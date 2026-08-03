@@ -1,8 +1,10 @@
 package application.mapper;
 
 
+import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
 import application.model.DictionaryGroup;
+import application.model.WordPair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +27,7 @@ public class DictionaryGroupMapper {
 
 
 
-    public DictionaryGroupResponse toResponse(
-            DictionaryGroup group
-    ){
+    public DictionaryGroupResponse toResponse(DictionaryGroup group){
 
 
         return new DictionaryGroupResponse(
@@ -44,21 +44,14 @@ public class DictionaryGroupMapper {
 
                 group.getCreatedAt(),
 
+                group.getLastUsedAt(),
 
-                userMapper.toResponse(
-                        group.getUser()
-                ),
+                userMapper.toResponse(group.getUser()),
 
-
-                languageMapper.toResponse(
-                        group.getSourceLanguage()
-                ),
+                languageMapper.toResponse(group.getSourceLanguage()),
 
 
-                languageMapper.toResponse(
-                        group.getTargetLanguage()
-                ),
-
+                languageMapper.toResponse(group.getTargetLanguage()),
 
                 group.getWords()
                         .stream()
@@ -68,5 +61,43 @@ public class DictionaryGroupMapper {
         );
 
     }
+
+
+    public DictionaryGroupCardResponse toCardResponse(DictionaryGroup group){
+
+
+        int wordCount = group.getWords().size();
+
+
+        int learnedWordCount =
+                (int) group.getWords()
+                        .stream()
+                        .filter(WordPair::isLearned)
+                        .count();
+
+
+
+        return new DictionaryGroupCardResponse(
+
+                group.getId(),
+
+                group.getName(),
+
+                group.getDescription(),
+
+                group.getSourceLanguage().getName(),
+
+                group.getTargetLanguage().getName(),
+
+                wordCount,
+
+                learnedWordCount,
+
+                group.getLastUsedAt()
+
+        );
+
+    }
+
 
 }

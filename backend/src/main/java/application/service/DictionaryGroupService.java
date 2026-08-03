@@ -1,6 +1,7 @@
 package application.service;
 
 
+import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
 import application.mapper.DictionaryGroupMapper;
 import application.model.DictionaryGroup;
@@ -34,6 +35,16 @@ public class DictionaryGroupService {
         return groupRepository.findByUser(user)
                 .stream()
                 .map(mapper::toResponse)
+                .toList();
+
+    }
+
+
+    public List<DictionaryGroupCardResponse> getMyGroupCards(User user){
+
+        return groupRepository.findByUser(user)
+                .stream()
+                .map(mapper::toCardResponse)
                 .toList();
 
     }

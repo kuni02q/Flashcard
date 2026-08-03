@@ -1,6 +1,7 @@
 package application.controller;
 
 
+import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
 import application.model.DictionaryGroup;
 import application.model.User;
@@ -36,16 +37,19 @@ public class DictionaryGroupController {
 
 
     @GetMapping("/my")
-    public List<DictionaryGroupResponse> myGroups(
-            Authentication authentication
-    ){
-
-
+    public List<DictionaryGroupResponse> myGroups(Authentication authentication){
         User user = getUser(authentication);
 
-
-
         return groupService.getMyGroups(user);
+
+    }
+
+
+    @GetMapping("/my/cards")
+    public List<DictionaryGroupCardResponse> myGroupCards(Authentication authentication){
+        User user = getUser(authentication);
+
+        return groupService.getMyGroupCards(user);
 
     }
 
