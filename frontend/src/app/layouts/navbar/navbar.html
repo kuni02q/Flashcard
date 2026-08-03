@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+  <div class="container">
+
+    <a class="navbar-brand" routerLink="/">
+      Szótár
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbar">
+
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+    <div
+      class="collapse navbar-collapse"
+      id="navbar">
+
+      <ul class="navbar-nav me-auto">
+
+        <li class="nav-item">
+
+          <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact:true}"
+            class="nav-link">
+
+            Főoldal
+
+          </a>
+
+        </li>
+
+      </ul>
+
+
+      <div class="d-flex">
+
+        @if(username$ | async; as username) {
+
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-light dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown">
+
+              {{username}}
+            </button>
+
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" routerLink="/profile">
+                  Profil
+                </a>
+              </li>
+
+
+              <li>
+                <button class="dropdown-item" (click)="logout()">
+                  Logout
+                </button>
+              </li>
+
+            </ul>
+
+          </div>
+
+        } @else {
+
+
+          <a routerLink="/auth" class="btn btn-outline-light">
+            Login / Sign Up
+          </a>
+
+        }
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</nav>

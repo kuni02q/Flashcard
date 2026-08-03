@@ -1,0 +1,82 @@
+<form (ngSubmit)="register()">
+
+
+  <div class="mb-3">
+    <label class="form-label">
+      Felhasználónév
+    </label>
+
+    <input
+      class="form-control"
+      [class.is-invalid]="registerError"
+      [(ngModel)]="username"
+      (ngModelChange)="clearError()"
+      name="username">
+  </div>
+
+
+  <div class="mb-3">
+    <label class="form-label">
+      Email
+    </label>
+
+    <input
+      class="form-control"
+      [class.is-invalid]="registerError"
+      type="email"
+      [(ngModel)]="email"
+      (ngModelChange)="clearError()"
+      name="email">
+  </div>
+
+
+
+  <div class="mb-3">
+    <label class="form-label">
+      Jelszó
+    </label>
+
+    <input
+      class="form-control"
+      [class.is-invalid]="registerError"
+      type="password"
+      [(ngModel)]="password"
+      (ngModelChange)="clearError()"
+      name="password">
+  </div>
+
+
+
+  <div class="mb-4">
+    <label class="form-label">
+      Jelszó újra
+    </label>
+
+    <input
+      class="form-control"
+      [class.is-invalid]="registerError"
+      type="password"
+      [(ngModel)]="confirmPassword"
+      (ngModelChange)="clearError()"
+      name="confirmPassword">
+  </div>
+
+
+  @if(registerError){
+
+    <div class="alert alert-danger">
+
+      {{errorMessage}}
+
+    </div>
+  }
+
+
+  <button
+    class="btn btn-success w-100"
+    type="submit">
+
+    Regisztráció
+  </button>
+
+</form>
