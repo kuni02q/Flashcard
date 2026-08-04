@@ -1,5 +1,6 @@
 package application.dto.response;
 
+import application.model.DictionaryGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -34,5 +35,8 @@ public class DictionaryGroupCardResponse {
 
     private LocalDateTime lastUsedAt;
 
+    private DictionaryGroup.QuizMode quizMode;
+
+    private int quizWordCount;
 
 }

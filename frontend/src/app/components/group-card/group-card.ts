@@ -3,6 +3,7 @@ import {DictionaryGroupCard} from '../../core/models/dictionary-group-card';
 import {CommonModule, DatePipe} from '@angular/common';
 import {QuizSettings, QuizSettingsModal} from '../quiz-settings-modal/quiz-settings-modal';
 import {Router} from '@angular/router';
+import {DictionaryGroupService} from '../../core/services/dictionary-group.service';
 
 @Component({
   selector: 'app-group-card',
@@ -22,24 +23,22 @@ export class GroupCard {
 
   showSettingsModal = false;
 
-  quizSettings: QuizSettings = {
-    mode: 'ONCE',
-    wordCount: 10
-  };
+  quizSettings!: QuizSettings;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private groupService: DictionaryGroupService) {}
 
   ngOnChanges() {
 
-    if (this.group) {
-      this.quizSettings.wordCount =
-        Math.min(
-          this.quizSettings.wordCount,
-          this.group.wordCount
-        );
-
+    if (!this.group) {
+      return;
     }
+
+    this.quizSettings = {
+      mode: this.group.quizMode,
+      wordCount: Math.min(this.group.quizWordCount, this.group.wordCount)
+    };
   }
+
 
   get learnedPercent(){
 
@@ -86,7 +85,23 @@ export class GroupCard {
 
     this.quizSettings = settings;
 
-    console.log('Quiz beállítások módosítva:', this.group.id, this.quizSettings);
+    this.groupService
+      .updateQuizSettings(this.group.id, settings)
+      .subscribe({
+
+        next: () => {
+
+          console.log('Quiz beállítások mentve');
+
+        },
+
+        error: error => {
+
+          console.error('Quiz beállítások mentése sikertelen', error);
+
+        }
+
+      });
 
   }
 

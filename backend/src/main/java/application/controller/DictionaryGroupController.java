@@ -1,6 +1,7 @@
 package application.controller;
 
 
+import application.dto.request.UpdateQuizSettingsRequest;
 import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
 import application.model.DictionaryGroup;
@@ -113,6 +114,25 @@ public class DictionaryGroupController {
         User user = getUser(authentication);
 
         groupService.deleteGroup(id, user);
+
+    }
+
+
+    @PutMapping("/{id}/quiz-settings")
+    public DictionaryGroupResponse updateQuizSettings(
+            @PathVariable Long id,
+            Authentication authentication,
+            @RequestBody UpdateQuizSettingsRequest request
+    ) {
+
+        User user = getUser(authentication);
+
+        return groupService.updateQuizSettings(
+                id,
+                user,
+                request.getMode(),
+                request.getWordCount()
+        );
 
     }
 

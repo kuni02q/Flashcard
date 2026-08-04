@@ -58,7 +58,11 @@ public class DictionaryGroupMapper {
                         group.getWords()
                             .stream()
                             .map(wordPairMapper::toResponse)
-                            .collect(Collectors.toList())
+                            .collect(Collectors.toList()),
+
+                group.getQuizMode(),
+
+                group.getQuizWordCount()
 
         );
 
@@ -95,7 +99,11 @@ public class DictionaryGroupMapper {
 
                 learnedWordCount,
 
-                group.getLastUsedAt()
+                group.getLastUsedAt(),
+
+                group.getQuizMode(),
+
+                group.getQuizWordCount()
 
         );
 

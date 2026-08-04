@@ -5,6 +5,15 @@ import { environment } from '../../../environments/environment';
 import { DictionaryGroupCard } from '../models/dictionary-group-card';
 
 
+export interface QuizSettings {
+
+  mode: 'ONCE' | 'UNTIL_CORRECT';
+
+  wordCount: number;
+
+}
+
+
 @Injectable({
   providedIn:'root'
 })
@@ -32,6 +41,12 @@ export class DictionaryGroupService {
 
   deleteGroup(id:number){
     return this.http.delete(`${this.api}/${id}`);
+
+  }
+
+  updateQuizSettings(id: number, settings: QuizSettings) {
+
+    return this.http.put(`${this.api}/${id}/quiz-settings`, settings);
 
   }
 

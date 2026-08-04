@@ -158,6 +158,45 @@ public class DictionaryGroupService {
     }
 
 
+    public DictionaryGroupResponse updateQuizSettings(
+            Long id,
+            User user,
+            DictionaryGroup.QuizMode mode,
+            int wordCount
+    ) {
+
+        DictionaryGroup group = getEntity(id);
+
+        checkOwner(group, user);
+
+
+        if (mode == null) {
+            throw new RuntimeException("Quiz mode is required");
+        }
+
+
+        if (wordCount < 1) {
+            throw new RuntimeException("Word count must be at least 1");
+        }
+
+
+        if (wordCount > group.getWords().size()) {
+            throw new RuntimeException("Word count cannot exceed the number of words in the group");
+        }
+
+
+        group.setQuizMode(mode);
+
+        group.setQuizWordCount(wordCount);
+
+
+        return mapper.toResponse(
+                groupRepository.save(group)
+        );
+
+    }
+
+
     private DictionaryGroup getEntity(Long id){
 
         return groupRepository.findById(id)

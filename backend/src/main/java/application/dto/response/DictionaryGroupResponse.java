@@ -45,5 +45,8 @@ public class DictionaryGroupResponse {
 
     private List<WordPairResponse> words;
 
+    private DictionaryGroup.QuizMode quizMode;
+
+    private int quizWordCount;
 
 }

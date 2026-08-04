@@ -34,6 +34,18 @@ public class DictionaryGroup {
 
     private LocalDateTime lastUsedAt;
 
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private QuizMode quizMode = QuizMode.ONCE;
+
+
+    @Column(nullable = false)
+    @Builder.Default
+    private int quizWordCount = 10;
+
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -64,7 +76,10 @@ public class DictionaryGroup {
         PUBLIC
     }
 
-
+    public enum QuizMode {
+        ONCE,
+        UNTIL_CORRECT
+    }
 
 
 

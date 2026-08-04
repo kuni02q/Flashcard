@@ -74,7 +74,7 @@ export class QuizSettingsModal {
     }
 
 
-    if (validWordCount > this.maxWordCount) {
+    if (this.maxWordCount > 0 && validWordCount > this.maxWordCount) {
       validWordCount = this.maxWordCount;
     }
 

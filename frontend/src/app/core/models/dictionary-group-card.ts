@@ -15,4 +15,8 @@ export interface DictionaryGroupCard {
   learnedWordCount:number;
 
   lastUsedAt:string | null;
+
+  quizMode: 'ONCE' | 'UNTIL_CORRECT';
+
+  quizWordCount: number;
 }
