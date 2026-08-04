@@ -3,9 +3,11 @@ package application.controller;
 
 import application.dto.request.WordPairRequest;
 import application.dto.response.WordPairResponse;
-import application.model.WordPair;
+import application.model.User;
+import application.repository.UserRepository;
 import application.service.WordPairService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 public class WordPairController {
 
     private final WordPairService wordService;
+
+    private final UserRepository userRepository;
 
     @GetMapping("/{groupId}/words")
     public List<WordPairResponse> words(
@@ -31,11 +35,15 @@ public class WordPairController {
     @PostMapping("/{groupId}/words")
     public WordPairResponse add(
             @PathVariable Long groupId,
+            Authentication authentication,
             @RequestBody WordPairRequest request
     ){
 
+        User user = getUser(authentication);
+
         return wordService.addWord(
                 groupId,
+                user,
                 request.getSourceWord(),
                 request.getTargetWord(),
                 request.getExampleSentence()
@@ -44,13 +52,56 @@ public class WordPairController {
     }
 
 
+    @PutMapping("/words/{id}")
+    public WordPairResponse update(
+            @PathVariable Long id,
+            Authentication authentication,
+            @RequestBody WordPairRequest request
+    ){
+        User user = getUser(authentication);
+
+        return wordService.updateWord(
+                id,
+                user,
+                request.getSourceWord(),
+                request.getTargetWord(),
+                request.getExampleSentence()
+        );
+    }
+
+
     @PutMapping("/words/{id}/learned")
     public void learned(
-            @PathVariable Long id
+            @PathVariable Long id,
+            Authentication authentication
     ){
 
-        wordService.markLearned(id);
+        User user = getUser(authentication);
 
+        wordService.markLearned(id, user);
+
+    }
+
+
+    @DeleteMapping("/words/{id}")
+    public void delete(
+            @PathVariable Long id,
+            Authentication authentication
+    ){
+
+        User user = getUser(authentication);
+        wordService.delete(id, user);
+
+    }
+
+
+    private User getUser(
+            Authentication authentication
+    ){
+        return userRepository
+                .findByUsername(authentication.getName())
+                .orElseThrow(() ->
+                                new RuntimeException("User not found"));
     }
 
 

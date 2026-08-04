@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 import { DictionaryGroupCard } from '../models/dictionary-group-card';
+import {DictionaryGroup} from '../models/dictionary-group';
 
 
 export interface QuizSettings {
@@ -33,6 +34,12 @@ export class DictionaryGroupService {
 
   }
 
+  getById(id: number) {
+
+    return this.http.get<DictionaryGroup>(`${this.api}/${id}`);
+
+  }
+
   createGroup(data:any){
 
     return this.http.post(this.api, data);
@@ -46,7 +53,7 @@ export class DictionaryGroupService {
 
   updateQuizSettings(id: number, settings: QuizSettings) {
 
-    return this.http.put(`${this.api}/${id}/quiz-settings`, settings);
+    return this.http.put<DictionaryGroup>(`${this.api}/${id}/quiz-settings`, settings);
 
   }
 

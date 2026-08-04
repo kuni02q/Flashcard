@@ -4,6 +4,7 @@ package application.service;
 import application.dto.response.WordPairResponse;
 import application.mapper.WordPairMapper;
 import application.model.DictionaryGroup;
+import application.model.User;
 import application.model.WordPair;
 import application.repository.DictionaryGroupRepository;
 import application.repository.WordPairRepository;
@@ -40,9 +41,9 @@ public class WordPairService {
 
 
 
-
     public WordPairResponse addWord(
             Long groupId,
+            User user,
             String sourceWord,
             String targetWord,
             String exampleSentence
@@ -52,6 +53,9 @@ public class WordPairService {
         DictionaryGroup group =
                 groupRepository.findById(groupId)
                         .orElseThrow(() -> new RuntimeException("Group not found"));
+
+
+        checkOwner(group, user);
 
 
         WordPair word =
@@ -69,19 +73,34 @@ public class WordPairService {
 
     }
 
+    public WordPairResponse updateWord( Long id, User user, String sourceWord,
+                                        String targetWord, String exampleSentence ) {
+
+        WordPair word = wordRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Word not found") );
+
+        checkOwner(word.getGroup(), user);
+
+        word.setSourceWord(sourceWord);
+
+        word.setTargetWord(targetWord);
+
+        word.setExampleSentence(exampleSentence);
+
+        return mapper.toResponse(
+                wordRepository.save(word)
+        );
+    }
 
 
-
-
-    public void markLearned(Long id){
+    public void markLearned(Long id, User user) {
 
 
         WordPair word =
                 wordRepository.findById(id)
-                        .orElseThrow(() ->
-                                new RuntimeException("Word not found")
-                        );
+                        .orElseThrow(() -> new RuntimeException("Word not found"));
 
+        checkOwner(word.getGroup(), user);
 
         word.setLearned(true);
 
@@ -94,10 +113,24 @@ public class WordPairService {
 
 
 
-    public void delete(Long id){
+    public void delete(Long id, User user) {
+
+        WordPair word =
+                wordRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Word not found") );
+
+        checkOwner(word.getGroup(), user);
 
         wordRepository.deleteById(id);
 
     }
+
+
+    private void checkOwner( DictionaryGroup group, User user ) {
+        if (!group.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException( "You are not the owner" );
+        }
+    }
+
 
 }
