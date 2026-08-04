@@ -7,6 +7,54 @@
     </h3>
 
 
+    <div class="mb-4">
+
+      <label class="form-label">
+        Kikérdezés iránya
+      </label>
+
+      <button
+        type="button"
+        class="btn btn-outline-primary w-100 quiz-direction-button"
+        (click)="toggleDirection()">
+
+        @if(direction === 'SOURCE_TO_TARGET') {
+
+          <span>
+            {{sourceLanguageName}}
+          </span>
+
+          <i class="bi bi-arrow-right mx-3"></i>
+
+          <span>
+            {{targetLanguageName}}
+          </span>
+
+        }
+        @else {
+
+          <span>
+            {{targetLanguageName}}
+          </span>
+
+          <i class="bi bi-arrow-right mx-3"></i>
+
+          <span>
+            {{sourceLanguageName}}
+          </span>
+
+        }
+
+      </button>
+
+
+      <small class="text-muted">
+        Kattints a sorrend megfordításához.
+      </small>
+
+    </div>
+
+
     <div class="mb-3">
 
       <label class="form-label">

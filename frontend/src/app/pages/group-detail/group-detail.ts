@@ -1,12 +1,13 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {QuizSettings, QuizSettingsModal} from '../../components/quiz-settings-modal/quiz-settings-modal';
+import { QuizSettingsModal} from '../../components/quiz-settings-modal/quiz-settings-modal';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DictionaryGroupService} from '../../core/services/dictionary-group.service';
 import {DictionaryGroup} from '../../core/models/dictionary-group';
 import {WordPairRequest, WordPairService} from '../../core/services/word-pair.service';
 import {WordPair} from '../../core/models/word-pair';
 import {FormsModule} from '@angular/forms';
+import {QuizSettings} from '../../core/models/quiz-settings';
 
 @Component({
   selector: 'app-group-detail',
@@ -66,9 +67,9 @@ export class GroupDetail implements OnInit {
 
           this.group = group;
           this.quizSettings = {
-            mode: group.quizMode,
-
-            wordCount: group.quizWordCount
+            mode: group.quizSettings.mode,
+            wordCount: group.quizSettings.wordCount,
+            direction: group.quizSettings.direction
           };
 
           this.cdr.markForCheck();
@@ -132,10 +133,7 @@ export class GroupDetail implements OnInit {
 
           this.group = updatedGroup;
 
-          this.quizSettings = {
-            mode: updatedGroup.quizMode,
-            wordCount: updatedGroup.quizWordCount
-          };
+          this.quizSettings = updatedGroup.quizSettings;
 
           this.cdr.markForCheck();
 

@@ -4,15 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { DictionaryGroupCard } from '../models/dictionary-group-card';
 import {DictionaryGroup} from '../models/dictionary-group';
-
-
-export interface QuizSettings {
-
-  mode: 'ONCE' | 'UNTIL_CORRECT';
-
-  wordCount: number;
-
-}
+import {QuizSettings} from '../models/quiz-settings';
 
 
 @Injectable({

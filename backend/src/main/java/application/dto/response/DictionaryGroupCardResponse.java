@@ -35,8 +35,6 @@ public class DictionaryGroupCardResponse {
 
     private LocalDateTime lastUsedAt;
 
-    private DictionaryGroup.QuizMode quizMode;
-
-    private int quizWordCount;
+    private QuizSettingsResponse quizSettings;
 
 }

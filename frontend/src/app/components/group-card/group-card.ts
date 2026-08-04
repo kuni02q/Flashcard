@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DictionaryGroupCard} from '../../core/models/dictionary-group-card';
 import {CommonModule, DatePipe} from '@angular/common';
-import {QuizSettings, QuizSettingsModal} from '../quiz-settings-modal/quiz-settings-modal';
+import {QuizSettingsModal} from '../quiz-settings-modal/quiz-settings-modal';
+import {QuizSettings} from '../../core/models/quiz-settings';
 import {Router} from '@angular/router';
 import {DictionaryGroupService} from '../../core/services/dictionary-group.service';
 
@@ -34,8 +35,9 @@ export class GroupCard {
     }
 
     this.quizSettings = {
-      mode: this.group.quizMode,
-      wordCount: Math.min(this.group.quizWordCount, this.group.wordCount)
+      mode: this.group.quizSettings.mode,
+      wordCount: Math.min(this.group.quizSettings.wordCount, this.group.wordCount),
+      direction: this.group.quizSettings.direction
     };
   }
 
@@ -110,8 +112,7 @@ export class GroupCard {
 
     event.stopPropagation();
 
-    console.log(
-      'Quiz indítása:', this.group.id, this.quizSettings);
+    console.log('Quiz indítása:', this.group.id, this.quizSettings);
 
 
     this.router.navigate(

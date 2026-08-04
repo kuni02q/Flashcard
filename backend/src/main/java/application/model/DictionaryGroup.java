@@ -81,8 +81,16 @@ public class DictionaryGroup {
         UNTIL_CORRECT
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private QuizDirection quizDirection = QuizDirection.SOURCE_TO_TARGET;
 
 
 
+    public enum QuizDirection {
+        SOURCE_TO_TARGET,
+        TARGET_TO_SOURCE
 
+    }
 }

@@ -1,8 +1,10 @@
 package application.service;
 
 
+import application.dto.request.QuizSettingsRequest;
 import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
+import application.dto.response.QuizSettingsResponse;
 import application.mapper.DictionaryGroupMapper;
 import application.model.DictionaryGroup;
 import application.model.Language;
@@ -161,8 +163,7 @@ public class DictionaryGroupService {
     public DictionaryGroupResponse updateQuizSettings(
             Long id,
             User user,
-            DictionaryGroup.QuizMode mode,
-            int wordCount
+            QuizSettingsRequest request
     ) {
 
         DictionaryGroup group = getEntity(id);
@@ -170,29 +171,33 @@ public class DictionaryGroupService {
         checkOwner(group, user);
 
 
-        if (mode == null) {
+        if (request.getMode() == null) {
             throw new RuntimeException("Quiz mode is required");
         }
 
+        if (request.getDirection() == null) {
+            throw new RuntimeException("Quiz direction is required");
+        }
 
-        if (wordCount < 1) {
+        if (request.getWordCount() < 1) {
             throw new RuntimeException("Word count must be at least 1");
         }
 
 
-        if (wordCount > group.getWords().size()) {
+        if (request.getWordCount() > group.getWords().size()) {
             throw new RuntimeException("Word count cannot exceed the number of words in the group");
         }
 
 
-        group.setQuizMode(mode);
+        group.setQuizMode(request.getMode());
+        group.setQuizWordCount(request.getWordCount());
+        group.setQuizDirection(request.getDirection());
 
-        group.setQuizWordCount(wordCount);
 
+        DictionaryGroup saved =
+                groupRepository.save(group);
 
-        return mapper.toResponse(
-                groupRepository.save(group)
-        );
+        return mapper.toResponse(saved);
 
     }
 

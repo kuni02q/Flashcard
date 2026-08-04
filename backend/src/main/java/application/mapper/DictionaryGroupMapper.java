@@ -3,6 +3,7 @@ package application.mapper;
 
 import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
+import application.dto.response.QuizSettingsResponse;
 import application.model.DictionaryGroup;
 import application.model.WordPair;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,17 @@ public class DictionaryGroupMapper {
     private final WordPairMapper wordPairMapper;
 
 
+    public QuizSettingsResponse toQuizSettingsResponse(
+            DictionaryGroup group
+    ) {
 
+        return new QuizSettingsResponse(
+                group.getQuizMode(),
+                group.getQuizWordCount(),
+                group.getQuizDirection()
+        );
+
+    }
 
     public DictionaryGroupResponse toResponse(DictionaryGroup group){
 
@@ -60,9 +71,7 @@ public class DictionaryGroupMapper {
                             .map(wordPairMapper::toResponse)
                             .collect(Collectors.toList()),
 
-                group.getQuizMode(),
-
-                group.getQuizWordCount()
+                toQuizSettingsResponse(group)
 
         );
 
@@ -101,9 +110,7 @@ public class DictionaryGroupMapper {
 
                 group.getLastUsedAt(),
 
-                group.getQuizMode(),
-
-                group.getQuizWordCount()
+                toQuizSettingsResponse(group)
 
         );
 

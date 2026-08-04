@@ -1,4 +1,5 @@
 import { WordPair } from './word-pair';
+import {QuizSettings} from './quiz-settings';
 
 export interface DictionaryGroup {
 
@@ -24,8 +25,6 @@ export interface DictionaryGroup {
 
   words: WordPair[];
 
-  quizMode: 'ONCE' | 'UNTIL_CORRECT';
-
-  quizWordCount: number;
+  quizSettings: QuizSettings;
 
 }

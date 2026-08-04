@@ -572,6 +572,10 @@
 
     [settings]="quizSettings"
 
+    [sourceLanguageName]="group.sourceLanguage.name"
+
+    [targetLanguageName]="group.targetLanguage.name"
+
     (close)="closeSettings()"
 
     (settingsChange)="updateQuizSettings($event)"

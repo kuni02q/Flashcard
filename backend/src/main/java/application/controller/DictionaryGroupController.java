@@ -1,10 +1,9 @@
 package application.controller;
 
 
-import application.dto.request.UpdateQuizSettingsRequest;
+import application.dto.request.QuizSettingsRequest;
 import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
-import application.model.DictionaryGroup;
 import application.model.User;
 import application.repository.UserRepository;
 import application.service.DictionaryGroupService;
@@ -122,7 +121,7 @@ public class DictionaryGroupController {
     public DictionaryGroupResponse updateQuizSettings(
             @PathVariable Long id,
             Authentication authentication,
-            @RequestBody UpdateQuizSettingsRequest request
+            @RequestBody QuizSettingsRequest request
     ) {
 
         User user = getUser(authentication);
@@ -130,8 +129,7 @@ public class DictionaryGroupController {
         return groupService.updateQuizSettings(
                 id,
                 user,
-                request.getMode(),
-                request.getWordCount()
+                request
         );
 
     }

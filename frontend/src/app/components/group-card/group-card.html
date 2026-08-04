@@ -123,6 +123,10 @@
 
     [settings]="quizSettings"
 
+    [sourceLanguageName]="group.sourceLanguage"
+
+    [targetLanguageName]="group.targetLanguage"
+
     (close)="closeSettings()"
 
     (settingsChange)="updateQuizSettings($event)"

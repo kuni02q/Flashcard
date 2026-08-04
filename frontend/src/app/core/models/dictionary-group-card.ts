@@ -1,3 +1,5 @@
+import {QuizSettings} from './quiz-settings';
+
 export interface DictionaryGroupCard {
 
   id:number;
@@ -16,7 +18,5 @@ export interface DictionaryGroupCard {
 
   lastUsedAt:string | null;
 
-  quizMode: 'ONCE' | 'UNTIL_CORRECT';
-
-  quizWordCount: number;
+  quizSettings: QuizSettings;
 }

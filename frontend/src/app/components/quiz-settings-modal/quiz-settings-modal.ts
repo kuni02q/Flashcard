@@ -1,10 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-
-export interface QuizSettings{
-  mode: 'ONCE' | 'UNTIL_CORRECT';
-  wordCount: number;
-}
+import {QuizSettings} from '../../core/models/quiz-settings';
 
 @Component({
   selector: 'app-quiz-settings-modal',
@@ -21,6 +17,12 @@ export class QuizSettingsModal {
   @Input()
   settings!: QuizSettings;
 
+  @Input()
+  sourceLanguageName = '';
+
+  @Input()
+  targetLanguageName = '';
+
   @Output()
   close = new EventEmitter<void>();
 
@@ -32,14 +34,15 @@ export class QuizSettingsModal {
 
   wordCount = 10;
 
+  direction: 'SOURCE_TO_TARGET' | 'TARGET_TO_SOURCE' = 'SOURCE_TO_TARGET';
 
   ngOnInit() {
 
     if (this.settings) {
 
       this.mode = this.settings.mode;
-
       this.wordCount = this.settings.wordCount;
+      this.direction = this.settings.direction;
 
     }
 
@@ -58,6 +61,20 @@ export class QuizSettingsModal {
 
 
   wordCountChanged() {
+
+    this.emitSettings();
+
+  }
+
+
+  toggleDirection() {
+
+    if (this.direction === 'SOURCE_TO_TARGET') {
+      this.direction = 'TARGET_TO_SOURCE';
+    }
+    else {
+      this.direction = 'SOURCE_TO_TARGET';
+    }
 
     this.emitSettings();
 
@@ -85,8 +102,8 @@ export class QuizSettingsModal {
     this.settingsChange.emit({
 
       mode: this.mode,
-
-      wordCount: this.wordCount
+      wordCount: this.wordCount,
+      direction: this.direction,
 
     });
 
