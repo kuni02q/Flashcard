@@ -86,17 +86,16 @@
   </div>
 
 
-  @if(showCreateModal){
-
-    <app-create-group-modal
-
-      (close)="showCreateModal=false"
-
-      (created)="groupCreated()"
-
-    ></app-create-group-modal>
-
-  }
-
 </div>
 
+@if(showCreateModal){
+
+  <app-create-group-modal
+
+    (close)="showCreateModal=false"
+
+    (created)="groupCreated()"
+
+  ></app-create-group-modal>
+
+}

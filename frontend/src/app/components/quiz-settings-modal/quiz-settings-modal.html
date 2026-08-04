@@ -1,0 +1,70 @@
+<div class="modal-backdrop" (click)="$event.stopPropagation()">
+
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <h3 class="mb-4">
+      Kikérdezés beállításai
+    </h3>
+
+
+    <div class="mb-3">
+
+      <label class="form-label">
+        Kikérdezés módja
+      </label>
+
+      <select
+        class="form-select"
+        [(ngModel)]="mode"
+        (ngModelChange)="modeChanged()">
+
+        <option value="ONCE">
+          Minden szó egyszer
+        </option>
+
+        <option value="UNTIL_CORRECT">
+          Hibás szavak ismétlése
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="mb-4">
+
+      <label class="form-label">
+        Szópárok száma
+      </label>
+
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="wordCount"
+        (ngModelChange)="wordCountChanged()"
+        min="1"
+        [max]="maxWordCount"
+      >
+
+      <small class="text-muted">
+        Maximum: {{maxWordCount}}
+      </small>
+
+    </div>
+
+
+    <div class="d-flex justify-content-end gap-2">
+
+      <button
+        class="btn btn-secondary"
+        (click)="closeModal()">
+
+        Mégse
+      </button>
+
+
+    </div>
+
+  </div>
+
+</div>
