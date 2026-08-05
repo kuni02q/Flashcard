@@ -42,6 +42,18 @@
 
       <div class="d-flex gap-2 mt-5">
 
+
+        <button
+          class="btn btn-outline-primary"
+          (click)="openImport()">
+
+          <i class="bi bi-file-earmark-arrow-up"></i>
+
+          Importálás
+
+        </button>
+
+
         <button
           class="btn btn-outline-secondary"
           (click)="openSettings()">
@@ -634,5 +646,17 @@
     (settingsChange)="updateQuizSettings($event)"
 
   ></app-quiz-settings-modal>
+
+}
+
+
+@if (showImportModal && group) {
+
+  <app-import-words-modal
+    [groupId]="group.id"
+    (close)="closeImport()"
+    (imported)="onImportCompleted()">
+
+  </app-import-words-modal>
 
 }

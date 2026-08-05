@@ -8,11 +8,12 @@ import {WordPairRequest, WordPairService} from '../../core/services/word-pair.se
 import {WordPair} from '../../core/models/word-pair';
 import {FormsModule} from '@angular/forms';
 import {QuizSettings} from '../../core/models/quiz-settings';
+import {ImportWordsModal} from '../../components/import-words-modal/import-words-modal';
 
 @Component({
   selector: 'app-group-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, QuizSettingsModal],
+  imports: [CommonModule, FormsModule, QuizSettingsModal, ImportWordsModal],
   templateUrl: './group-detail.html',
   styleUrl: './group-detail.css',
 })
@@ -34,6 +35,8 @@ export class GroupDetail implements OnInit {
   newTargetWord = '';
 
   savingNewWord = false;
+
+  showImportModal = false;
 
 
   @ViewChild('newSourceInput')
@@ -395,6 +398,33 @@ export class GroupDetail implements OnInit {
     this.quickAddingWord = false;
     this.newSourceWord = '';
     this.newTargetWord = '';
+
+  }
+
+
+
+  openImport() {
+
+    this.showImportModal = true;
+
+  }
+
+
+  closeImport() {
+
+    this.showImportModal = false;
+
+  }
+
+
+  onImportCompleted() {
+
+    this.showImportModal = false;
+    if (!this.group) {
+      return;
+    }
+
+    this.loadGroup(this.group.id);
 
   }
 

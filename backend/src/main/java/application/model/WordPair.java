@@ -7,7 +7,6 @@ import lombok.*;
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "uk_word_pair_group_source_target",
                         columnNames = {
                                 "group_id",
                                 "source_word",
