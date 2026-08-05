@@ -68,6 +68,8 @@ export class Quiz implements OnInit {
           this.loading = false;
           this.cdr.markForCheck();
 
+          this.focusAnswerInput()
+
         },
 
         error: error => {
@@ -113,10 +115,6 @@ export class Quiz implements OnInit {
     this.wrongAnswers = 0;
 
     this.finished = this.questions.length === 0;
-
-    if (!this.finished) {
-      this.focusAnswerInput();
-    }
 
 
 
