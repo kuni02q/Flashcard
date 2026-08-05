@@ -27,10 +27,13 @@ export class GroupDetail implements OnInit {
   editingWordId: number | null = null;
 
   addingWord = false;
+  quickAddingWord = false;
 
   newSourceWord = '';
 
   newTargetWord = '';
+
+  savingNewWord = false;
 
 
   @ViewChild('newSourceInput')
@@ -324,6 +327,7 @@ export class GroupDetail implements OnInit {
   }
 
 
+
   saveNewWord() {
 
     if (!this.group) {
@@ -358,19 +362,20 @@ export class GroupDetail implements OnInit {
           }
 
 
-          this.group.words.push(
-            createdWord
-          );
+          this.group.words.push(createdWord);
 
-
-          this.addingWord = false;
 
           this.newSourceWord = '';
 
           this.newTargetWord = '';
 
+          this.addingWord = false;
 
           this.cdr.markForCheck();
+
+          if (this.quickAddingWord) {
+            this.startAddingWord();
+          }
 
         },
 
@@ -387,6 +392,7 @@ export class GroupDetail implements OnInit {
   cancelAddingWord() {
 
     this.addingWord = false;
+    this.quickAddingWord = false;
     this.newSourceWord = '';
     this.newTargetWord = '';
 

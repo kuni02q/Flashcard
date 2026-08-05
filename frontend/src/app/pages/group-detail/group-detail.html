@@ -209,11 +209,19 @@
             <!-- FELSŐ HOZZÁADÁS -->
 
             <button
+              class="btn btn-outline-primary btn-sm"
+              [disabled]="addingWord || editingWordId !== null"
+              (click)="quickAddingWord = true; startAddingWord()"
+              title="Gyors szópár hozzáadás">
+
+              <i class="bi bi-lightning-charge-fill"></i>
+
+            </button>
+
+
+            <button
               class="btn btn-primary btn-sm"
-              [disabled]="
-                addingWord ||
-                editingWordId !== null
-              "
+              [disabled]="addingWord || editingWordId !== null"
               (click)="startAddingWord()"
               title="Szópár hozzáadása">
 
@@ -301,6 +309,7 @@
                       placeholder="Forrásnyelvi szó"
                       [(ngModel)]="newSourceWord"
                       (keydown.enter)="saveNewWord()"
+                      (keydown.escape)="cancelAddingWord()"
                     >
 
                   </td>
@@ -314,6 +323,7 @@
                       placeholder="Célnyelvi szó"
                       [(ngModel)]="newTargetWord"
                       (keydown.enter)="saveNewWord()"
+                      (keydown.escape)="cancelAddingWord()"
                     >
 
                   </td>
@@ -573,10 +583,19 @@
 
           <button
             class="btn btn-outline-primary btn-sm"
-            [disabled]="
-              addingWord ||
-              editingWordId !== null
-            "
+            [disabled] = "addingWord || editingWordId !== null"
+            (click)="quickAddingWord = true; startAddingWord()">
+
+            <i class="bi bi-lightning-charge-fill"></i>
+
+            Gyors hozzáadás
+
+          </button>
+
+
+          <button
+            class="btn btn-outline-primary btn-sm"
+            [disabled]="addingWord || editingWordId !== null"
             (click)="startAddingWord()">
 
             <i class="bi bi-plus-lg"></i>
