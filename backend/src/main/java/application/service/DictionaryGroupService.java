@@ -226,4 +226,22 @@ public class DictionaryGroupService {
     }
 
 
+    public DictionaryGroupResponse completeQuiz(
+            Long id,
+            User user
+    ) {
+
+        DictionaryGroup group = getEntity(id);
+
+        checkOwner(group, user);
+
+        group.setLastUsedAt(java.time.LocalDateTime.now());
+
+        DictionaryGroup saved = groupRepository.save(group);
+
+        return mapper.toResponse(saved);
+
+    }
+
+
 }

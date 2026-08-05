@@ -26,6 +26,14 @@ public class WordPair {
 
     private boolean learned = false;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private int quizCount = 0;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private int correctCount = 0;
+
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
     private DictionaryGroup group;

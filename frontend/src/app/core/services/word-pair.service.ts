@@ -44,4 +44,15 @@ export class WordPairService {
 
   }
 
+  registerQuizAnswer(id: number, correct: boolean) {
+
+    return this.http.post<WordPair>(
+      `${this.api}/words/${id}/quiz-answer`,
+      {
+        correct
+      }
+    );
+
+  }
+
 }

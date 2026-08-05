@@ -49,5 +49,11 @@ export class DictionaryGroupService {
 
   }
 
+  completeQuiz(id: number) {
+
+    return this.http.post<DictionaryGroup>(`${this.api}/${id}/quiz-completed`, {});
+
+  }
+
 
 }

@@ -135,6 +135,22 @@ public class DictionaryGroupController {
     }
 
 
+    @PostMapping("/{id}/quiz-completed")
+    public DictionaryGroupResponse completeQuiz(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+
+        User user = getUser(authentication);
+
+        return groupService.completeQuiz(
+                id,
+                user
+        );
+
+    }
+
+
 
     private User getUser(Authentication authentication){
 

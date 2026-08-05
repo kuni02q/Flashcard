@@ -1,6 +1,7 @@
 package application.controller;
 
 
+import application.dto.request.QuizAnswerRequest;
 import application.dto.request.WordPairRequest;
 import application.dto.response.WordPairResponse;
 import application.model.User;
@@ -79,6 +80,24 @@ public class WordPairController {
         User user = getUser(authentication);
 
         wordService.markLearned(id, user);
+
+    }
+
+
+    @PostMapping("/words/{id}/quiz-answer")
+    public WordPairResponse quizAnswer(
+            @PathVariable Long id,
+            Authentication authentication,
+            @RequestBody QuizAnswerRequest request
+    ) {
+
+        User user = getUser(authentication);
+
+        return wordService.registerQuizAnswer(
+                id,
+                user,
+                request.isCorrect()
+        );
 
     }
 

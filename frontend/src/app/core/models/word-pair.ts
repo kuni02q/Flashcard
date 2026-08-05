@@ -10,4 +10,7 @@ export interface WordPair {
 
   learned: boolean;
 
+  quizCount: number;
+
+  correctCount: number;
 }

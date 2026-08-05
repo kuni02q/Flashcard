@@ -14,10 +14,10 @@
       </button>
 
 
-      @if(group) {
+      @if (group) {
 
         <h1 class="fw-bold mb-2">
-          {{group.name}}
+          {{ group.name }}
         </h1>
 
 
@@ -25,11 +25,11 @@
 
           <i class="bi bi-translate"></i>
 
-          {{group.sourceLanguage.name}}
+          {{ group.sourceLanguage.name }}
 
           -
 
-          {{group.targetLanguage.name}}
+          {{ group.targetLanguage.name }}
 
         </p>
 
@@ -38,7 +38,7 @@
     </div>
 
 
-    @if(group) {
+    @if (group) {
 
       <div class="d-flex gap-2 mt-5">
 
@@ -81,7 +81,7 @@
   </div>
 
 
-  @if(group) {
+  @if (group) {
 
     <!-- STATISZTIKÁK -->
 
@@ -105,7 +105,7 @@
 
             <h2 class="fw-bold mb-0">
 
-              {{group.words.length}}
+              {{ group.words.length }}
 
             </h2>
 
@@ -133,11 +133,11 @@
 
             <h2 class="fw-bold mb-0">
 
-              {{learnedWordCount}}
+              {{ learnedWordCount }}
 
               /
 
-              {{group.words.length}}
+              {{ group.words.length }}
 
             </h2>
 
@@ -165,12 +165,11 @@
 
             <h5 class="fw-bold mb-0">
 
-              @if(group.lastUsedAt) {
+              @if (group.lastUsedAt) {
 
-                {{group.lastUsedAt | date:'yyyy.MM.dd HH:mm'}}
+                {{ group.lastUsedAt | date:'yyyy.MM.dd HH:mm' }}
 
-              }
-              @else {
+              } @else {
 
                 Még nem használva
 
@@ -203,7 +202,7 @@
           <div class="d-flex align-items-center gap-2">
 
             <span class="badge text-bg-secondary">
-              {{group.words.length}} db
+              {{ group.words.length }} db
             </span>
 
 
@@ -241,12 +240,12 @@
 
 
               <th>
-                {{group.sourceLanguage.name}}
+                {{ group.sourceLanguage.name }}
               </th>
 
 
               <th>
-                {{group.targetLanguage.name}}
+                {{ group.targetLanguage.name }}
               </th>
 
 
@@ -255,6 +254,14 @@
                 style="width: 120px;">
 
                 Memorizált
+
+              </th>
+
+              <th
+                class="text-center"
+                style="width: 160px;">
+
+                Kikérdezés
 
               </th>
 
@@ -276,7 +283,7 @@
 
             <!-- ÚJ SZÓPÁR -->
 
-              @if(addingWord) {
+              @if (addingWord) {
 
                 <tr>
 
@@ -350,18 +357,16 @@
 
             <!-- MEGLÉVŐ SZÓPÁROK -->
 
-              @for(
-                word of group.words;
+              @for (word of group.words;
                 track word.id;
-                let i = $index
-                ) {
+                let i = $index) {
 
                 <tr>
 
                   <!-- SORSZÁM -->
 
                   <td>
-                    {{i + 1}}.
+                    {{ i + 1 }}.
                   </td>
 
 
@@ -369,7 +374,7 @@
 
                   <td>
 
-                    @if(editingWordId === word.id) {
+                    @if (editingWordId === word.id) {
 
                       <input
                         type="text"
@@ -378,11 +383,10 @@
                         (keydown.enter)="saveWord(word)"
                       >
 
-                    }
-                    @else {
+                    } @else {
 
                       <strong>
-                        {{word.sourceWord}}
+                        {{ word.sourceWord }}
                       </strong>
 
                     }
@@ -394,7 +398,7 @@
 
                   <td>
 
-                    @if(editingWordId === word.id) {
+                    @if (editingWordId === word.id) {
 
                       <input
                         type="text"
@@ -403,10 +407,9 @@
                         (keydown.enter)="saveWord(word)"
                       >
 
-                    }
-                    @else {
+                    } @else {
 
-                      {{word.targetWord}}
+                      {{ word.targetWord }}
 
                     }
 
@@ -417,15 +420,14 @@
 
                   <td class="text-center">
 
-                    @if(word.learned) {
+                    @if (word.learned) {
 
                       <i
                         class="bi bi-check-circle-fill text-success"
                         title="Memorizált">
                       </i>
 
-                    }
-                    @else {
+                    } @else {
 
                       <i
                         class="bi bi-circle text-muted"
@@ -436,12 +438,47 @@
 
                   </td>
 
+                  <td class="text-center">
+
+                    @if (word.quizCount === 0) {
+
+                      <span class="text-muted">
+                         -
+                      </span>
+
+                    } @else {
+
+                      <span
+                        class="fw-semibold"
+                        [class.text-success]="
+                          word.correctCount === word.quizCount
+                        ">
+
+                        {{ word.correctCount }}
+                        /
+                        {{ word.quizCount }}
+
+                      </span>
+
+                      <div class="small text-muted">
+
+                        {{
+                          (word.correctCount / word.quizCount * 100)
+                            | number:'1.0-0'
+                        }}%
+
+                      </div>
+
+                    }
+
+                  </td>
+
 
                   <!-- MŰVELETEK -->
 
                   <td class="text-end">
 
-                    @if(editingWordId === word.id) {
+                    @if (editingWordId === word.id) {
 
                       <!-- MENTÉS -->
 
@@ -458,8 +495,7 @@
 
                       </button>
 
-                    }
-                    @else {
+                    } @else {
 
                       <!-- SZERKESZTÉS -->
 
@@ -503,15 +539,13 @@
 
             <!-- ÜRES LISTA -->
 
-              @if(
-                group.words.length === 0 &&
-                !addingWord
-                ) {
+              @if (group.words.length === 0 &&
+              !addingWord) {
 
                 <tr>
 
                   <td
-                    colspan="5"
+                    colspan="6"
                     class="text-center text-muted py-5">
 
                     <i class="bi bi-book fs-1"></i>
@@ -564,7 +598,7 @@
 
 <!-- QUIZ BEÁLLÍTÁSOK -->
 
-@if(showSettingsModal && group) {
+@if (showSettingsModal && group) {
 
   <app-quiz-settings-modal
 

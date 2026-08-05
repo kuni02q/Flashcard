@@ -24,7 +24,11 @@ public class WordPairMapper {
 
                 word.getExampleSentence(),
 
-                word.isLearned()
+                word.isLearned(),
+
+                word.getQuizCount(),
+
+                word.getCorrectCount()
 
         );
 

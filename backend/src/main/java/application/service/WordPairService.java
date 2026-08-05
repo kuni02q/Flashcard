@@ -110,6 +110,30 @@ public class WordPairService {
     }
 
 
+    public WordPairResponse registerQuizAnswer(
+            Long id,
+            User user,
+            boolean correct
+    ) {
+
+        WordPair word =
+                wordRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Word not found"));
+
+        checkOwner(word.getGroup(), user);
+
+        word.setQuizCount(word.getQuizCount() + 1);
+
+        if (correct) {
+            word.setCorrectCount(word.getCorrectCount() + 1);
+
+        }
+
+        return mapper.toResponse(wordRepository.save(word));
+
+    }
+
+
 
 
 
