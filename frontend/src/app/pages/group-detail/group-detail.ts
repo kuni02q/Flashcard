@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { QuizSettingsModal} from '../../components/quiz-settings-modal/quiz-settings-modal';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -31,6 +31,10 @@ export class GroupDetail implements OnInit {
   newSourceWord = '';
 
   newTargetWord = '';
+
+
+  @ViewChild('newSourceInput')
+  newSourceInput?: ElementRef<HTMLInputElement>;
 
 
   constructor(private route: ActivatedRoute, private router: Router,
@@ -312,6 +316,11 @@ export class GroupDetail implements OnInit {
     this.newSourceWord = '';
 
     this.newTargetWord = '';
+
+    this.cdr.detectChanges();
+
+    this.newSourceInput?.nativeElement.focus();
+
   }
 
 
