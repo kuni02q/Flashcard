@@ -17,5 +17,18 @@ public interface WordPairRepository extends JpaRepository<WordPair, Long> {
             boolean learned
     );
 
+    boolean existsByGroupAndSourceWordAndTargetWord(
+            DictionaryGroup group,
+            String sourceWord,
+            String targetWord
+    );
+
+    boolean existsByGroupAndSourceWordAndTargetWordAndIdNot(
+            DictionaryGroup group,
+            String sourceWord,
+            String targetWord,
+            Long id
+    );
+
 
 }

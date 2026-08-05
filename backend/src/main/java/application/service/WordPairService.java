@@ -57,6 +57,18 @@ public class WordPairService {
 
         checkOwner(group, user);
 
+        sourceWord = sourceWord.trim();
+        targetWord = targetWord.trim();
+
+
+        if (wordRepository.existsByGroupAndSourceWordAndTargetWord(
+                group,
+                sourceWord,
+                targetWord
+        )) {
+            throw new RuntimeException("This word pair already exists in the group");
+        }
+
 
         WordPair word =
                 WordPair.builder()
@@ -81,10 +93,23 @@ public class WordPairService {
 
         checkOwner(word.getGroup(), user);
 
+
+        sourceWord = sourceWord.trim();
+        targetWord = targetWord.trim();
+
+        if (wordRepository.existsByGroupAndSourceWordAndTargetWordAndIdNot(
+                word.getGroup(),
+                sourceWord,
+                targetWord,
+                id
+        )) {
+            throw new RuntimeException("This word pair already exists in the group");
+        }
+
+
+
         word.setSourceWord(sourceWord);
-
         word.setTargetWord(targetWord);
-
         word.setExampleSentence(exampleSentence);
 
         return mapper.toResponse(

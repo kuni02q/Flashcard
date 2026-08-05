@@ -4,6 +4,18 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_word_pair_group_source_target",
+                        columnNames = {
+                                "group_id",
+                                "source_word",
+                                "target_word"
+                        }
+                )
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
