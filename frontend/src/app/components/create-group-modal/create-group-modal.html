@@ -1,13 +1,13 @@
 <div class="modal-backdrop" (click)="$event.stopPropagation()">
 
 
-  <div class="modal-box" (click)="$event.stopPropagation()">
+  <div class="modal-box bg-body text-body" (click)="$event.stopPropagation()">
 
     <h3>
       Új csoport létrehozása
     </h3>
 
-    <label>
+    <label class="form-label">
       Név
     </label>
 
@@ -16,7 +16,7 @@
       [(ngModel)]="name"
     >
 
-    <label>
+    <label class="form-label">
       Leírás
     </label>
 
@@ -28,7 +28,7 @@
 
 
 
-    <label>
+    <label class="form-label">
       Forrás nyelv
     </label>
 
@@ -44,13 +44,14 @@
 
       @if(sourceDropdownOpen){
 
-        <div class="language-list">
+        <div class="language-list list-group">
 
           @for(language of filteredSourceLanguages; track language.id){
 
-            <div class="language-item" (click)="selectSourceLanguage(language)">
+
+            <button type="button" class="language-item list-group-item list-group-item-action" (click)="selectSourceLanguage(language)">
               {{language.name}}
-            </div>
+            </button>
 
           }
 
@@ -62,7 +63,7 @@
 
 
 
-    <label>
+    <label class="form-label mt-3">
       Cél nyelv
     </label>
 
@@ -78,13 +79,13 @@
 
       @if(targetDropdownOpen){
 
-        <div class="language-list">
+        <div class="language-list list-group">
 
           @for(language of filteredTargetLanguages; track language.id){
 
-            <div class="language-item" (click)="selectTargetLanguage(language)">
+            <button type="button" class="language-item list-group-item list-group-item-action" (click)="selectTargetLanguage(language)">
               {{language.name}}
-            </div>
+            </button>
 
           }
 

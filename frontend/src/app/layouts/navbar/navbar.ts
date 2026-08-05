@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {AuthService} from '../../core/services/auth.service';
 import {AsyncPipe} from '@angular/common';
+import {ThemeService} from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,7 @@ export class Navbar {
   username$;
 
   constructor(
-    private authService:AuthService
+    private authService:AuthService, public themeService: ThemeService, private router:Router
   ){
 
     this.username$ =
@@ -24,10 +25,16 @@ export class Navbar {
   }
 
 
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
+
 
   logout(){
 
     this.authService.logout();
+
+    this.router.navigate(['/auth']);
 
   }
 
