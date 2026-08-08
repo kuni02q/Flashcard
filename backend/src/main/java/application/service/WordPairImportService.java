@@ -37,7 +37,8 @@ public class WordPairImportService {
     public ImportPreviewResponse previewCsv(
             Long groupId,
             User user,
-            MultipartFile file
+            MultipartFile file,
+            boolean hasHeader
     ) {
 
         DictionaryGroup group =
@@ -48,20 +49,10 @@ public class WordPairImportService {
         validateFile(file);
 
         try (
-                Reader reader = createReader(file);
-
-                CSVParser parser =
-                        CSVFormat.DEFAULT.builder()
-                                .setDelimiter(';')
-                                .setHeader()
-                                .setSkipHeaderRecord(true)
-                                .setIgnoreEmptyLines(true)
-                                .setTrim(true)
-                                .build()
-                                .parse(reader)
+                CSVParser parser = createParser(file, hasHeader)
         ) {
 
-            List<WordPairImportRow> importRows = parseCsv(parser);
+            List<WordPairImportRow> importRows = parseCsv(parser, hasHeader);
 
             return createPreview(
                     importRows,
@@ -80,7 +71,8 @@ public class WordPairImportService {
     public void importCsv(
             Long groupId,
             User user,
-            MultipartFile file
+            MultipartFile file,
+            boolean hasHeader
     ) {
 
         DictionaryGroup group =
@@ -91,20 +83,10 @@ public class WordPairImportService {
         validateFile(file);
 
         try (
-                Reader reader = createReader(file);
-
-                CSVParser parser =
-                        CSVFormat.DEFAULT.builder()
-                                .setDelimiter(';')
-                                .setHeader()
-                                .setSkipHeaderRecord(true)
-                                .setIgnoreEmptyLines(true)
-                                .setTrim(true)
-                                .build()
-                                .parse(reader)
+                CSVParser parser = createParser(file, hasHeader)
         ) {
 
-            List<WordPairImportRow> importRows = parseCsv(parser);
+            List<WordPairImportRow> importRows = parseCsv(parser, hasHeader);
 
             Set<String> existingPairs = new HashSet<>();
 
@@ -185,7 +167,8 @@ public class WordPairImportService {
 
 
     private List<WordPairImportRow> parseCsv(
-            CSVParser parser
+            CSVParser parser,
+            boolean hasHeader
     ) {
 
         List<WordPairImportRow> rows =
@@ -194,26 +177,17 @@ public class WordPairImportService {
 
         for (CSVRecord record : parser) {
 
-            String sourceWord =
-                    getValue(
-                            record,
-                            "sourceWord",
-                            true
-                    );
+            String sourceWord = hasHeader
+                    ? getValue(record, "sourceWord", true)
+                    : getValue(record, 0, true);
 
-            String targetWord =
-                    getValue(
-                            record,
-                            "targetWord",
-                            true
-                    );
+            String targetWord = hasHeader
+                    ? getValue(record, "targetWord", true)
+                    : getValue(record, 1, true);
 
-            String exampleSentence =
-                    getValue(
-                            record,
-                            "exampleSentence",
-                            false
-                    );
+            String exampleSentence = hasHeader
+                    ? getValue(record, "exampleSentence", false)
+                    : getValue(record, 2, false);
 
 
             rows.add(
@@ -419,6 +393,44 @@ public class WordPairImportService {
 
 
 
+    private String getValue(
+            CSVRecord record,
+            int index,
+            boolean required
+    ) {
+
+        if (!record.isSet(index)) {
+
+            if (required) {
+                throw new RuntimeException("Missing required column. Expected: sourceWord;targetWord;exampleSentence");
+            }
+
+            return "";
+
+        }
+
+        return record.get(index).trim();
+
+    }
+
+    private CSVParser createParser(
+            MultipartFile file,
+            boolean hasHeader
+    ) throws IOException {
+
+        CSVFormat.Builder format = CSVFormat.DEFAULT.builder()
+                .setDelimiter(';')
+                .setIgnoreEmptyLines(true)
+                .setTrim(true);
+
+        if (hasHeader) {
+            format.setHeader().setSkipHeaderRecord(true);
+        }
+
+        return format.build().parse(createReader(file));
+
+    }
+
     private Reader createReader(MultipartFile file
     ) throws IOException {
 
@@ -455,18 +467,6 @@ public class WordPairImportService {
         if (file == null || file.isEmpty()) {
 
             throw new RuntimeException("The uploaded file is empty");
-
-        }
-
-
-        String filename =
-                file.getOriginalFilename();
-
-
-        if (filename == null
-                || !filename.toLowerCase().endsWith(".csv")) {
-
-            throw new RuntimeException("Only CSV files are supported");
 
         }
 

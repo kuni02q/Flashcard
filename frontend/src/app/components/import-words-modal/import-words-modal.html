@@ -23,9 +23,18 @@
       <div class="mb-4">
         <label class="form-label fw-semibold"> Fájl kiválasztása </label>
 
-        <input type="file" class="form-control" accept=".csv" (change)="onFileSelected($event)" />
+        <input type="file" class="form-control" (change)="onFileSelected($event)" />
 
-        <div class="form-text">Jelenleg ;-vel elválasztott CSV fájlok importálása támogatott.</div>
+        <div class="form-check mt-3">
+          <input id="has-header" class="form-check-input" type="checkbox" [(ngModel)]="hasHeader" />
+          <label class="form-check-label" for="has-header">A fájl első sora fejlécet tartalmaz</label>
+        </div>
+
+        <div class="form-text">
+          Fejléccel: <code>sourceWord;targetWord;exampleSentence</code>. Fejléc nélkül az első három oszlopot használjuk.
+        </div>
+
+        <div class="form-text">UTF-8 kódolású, pontosvesszővel (;) elválasztott szöveges fájlok támogatottak.</div>
       </div>
 
       @if (selectedFile) {

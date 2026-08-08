@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { WordImportService } from '../../core/services/word-import.service';
 import { ImportPreview } from '../../core/models/import-preview';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,7 +9,7 @@ import { AlertService } from '../../core/services/alert.service';
 @Component({
   selector: 'app-import-words-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './import-words-modal.html',
   styleUrl: './import-words-modal.css',
 })
@@ -28,6 +29,8 @@ export class ImportWordsModal {
   importing = false;
 
   errorMessage = '';
+
+  hasHeader = true;
 
   constructor(
     private importService: WordImportService,
@@ -62,7 +65,7 @@ export class ImportWordsModal {
 
     this.errorMessage = '';
 
-    this.importService.preview(this.groupId, this.selectedFile).subscribe({
+    this.importService.preview(this.groupId, this.selectedFile, this.hasHeader).subscribe({
       next: (preview) => {
         console.log('Import preview sikeres:', preview);
 
@@ -112,7 +115,7 @@ export class ImportWordsModal {
 
     this.errorMessage = '';
 
-    this.importService.confirm(this.groupId, this.selectedFile).subscribe({
+    this.importService.confirm(this.groupId, this.selectedFile, this.hasHeader).subscribe({
       next: () => {
         this.importing = false;
         this.imported.emit();

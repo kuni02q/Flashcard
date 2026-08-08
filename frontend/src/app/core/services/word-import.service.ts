@@ -12,10 +12,11 @@ export class WordImportService {
 
   constructor(private http: HttpClient) {}
 
-  preview(groupId: number, file: File): Observable<ImportPreview> {
+  preview(groupId: number, file: File, hasHeader: boolean): Observable<ImportPreview> {
     const formData = new FormData();
 
     formData.append('file', file);
+    formData.append('hasHeader', String(hasHeader));
 
     return this.http.post<ImportPreview>(
       `${this.apiUrl}/groups/${groupId}/words/import/preview`,
@@ -23,10 +24,11 @@ export class WordImportService {
     );
   }
 
-  confirm(groupId: number, file: File): Observable<void> {
+  confirm(groupId: number, file: File, hasHeader: boolean): Observable<void> {
     const formData = new FormData();
 
     formData.append('file', file);
+    formData.append('hasHeader', String(hasHeader));
 
     return this.http.post<void>(`${this.apiUrl}/groups/${groupId}/words/import`, formData);
   }

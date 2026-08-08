@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +25,7 @@ public class WordPairImportController {
     public ResponseEntity<?> preview(
             @PathVariable Long groupId,
             @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "hasHeader", defaultValue = "true") boolean hasHeader,
             Authentication authentication
     ) {
 
@@ -36,7 +36,8 @@ public class WordPairImportController {
                     importService.previewCsv(
                             groupId,
                             user,
-                            file
+                            file,
+                            hasHeader
                     );
 
             return ResponseEntity.ok(response);
@@ -56,6 +57,7 @@ public class WordPairImportController {
     public ResponseEntity<?> importWords(
             @PathVariable Long groupId,
             @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "hasHeader", defaultValue = "true") boolean hasHeader,
             Authentication authentication
     ) {
 
@@ -66,7 +68,8 @@ public class WordPairImportController {
             importService.importCsv(
                     groupId,
                     user,
-                    file
+                    file,
+                    hasHeader
             );
 
             return ResponseEntity.ok().build();
