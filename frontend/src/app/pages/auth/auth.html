@@ -1,63 +1,39 @@
 <div class="container mt-5">
-
   <div class="row justify-content-center">
-
     <div class="col-lg-5 col-md-7">
-
       <div class="card shadow">
-
         <div class="card-header bg-body-tertiary">
-
           <ul class="nav nav-tabs card-header-tabs">
-
             <li class="nav-item">
-
               <button
                 class="nav-link"
                 [class.active]="loginSelected"
-                (click)="loginSelected = true">
-
+                (click)="loginSelected = true"
+              >
                 Bejelentkezés
-
               </button>
-
             </li>
 
             <li class="nav-item">
-
               <button
                 class="nav-link"
                 [class.active]="!loginSelected"
-                (click)="loginSelected = false">
-
+                (click)="loginSelected = false"
+              >
                 Regisztráció
-
               </button>
-
             </li>
-
           </ul>
-
         </div>
 
         <div class="card-body">
-
-          @if(loginSelected){
-
+          @if (loginSelected) {
             <app-login-form></app-login-form>
-
           } @else {
-
             <app-register-form></app-register-form>
-
           }
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </div>

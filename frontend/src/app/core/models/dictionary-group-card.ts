@@ -1,22 +1,21 @@
-import {QuizSettings} from './quiz-settings';
+import { QuizSettings } from './quiz-settings';
 
 export interface DictionaryGroupCard {
+  id: number;
 
-  id:number;
+  name: string;
 
-  name:string;
+  description: string;
 
-  description:string;
+  sourceLanguage: string;
 
-  sourceLanguage:string;
+  targetLanguage: string;
 
-  targetLanguage:string;
+  wordCount: number;
 
-  wordCount:number;
+  learnedWordCount: number;
 
-  learnedWordCount:number;
-
-  lastUsedAt:string | null;
+  lastUsedAt: string | null;
 
   quizSettings: QuizSettings;
 }

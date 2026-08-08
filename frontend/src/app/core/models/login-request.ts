@@ -1,7 +1,5 @@
 export interface LoginRequest {
+  identifier: string;
 
-  identifier:string;
-
-  password:string;
-
+  password: string;
 }

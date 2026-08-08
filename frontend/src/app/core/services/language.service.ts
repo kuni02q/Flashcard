@@ -4,24 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Language } from '../models/language';
 
-
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root',
 })
 export class LanguageService {
+  private api = environment.apiUrl + '/languages';
 
-  private api =
-    environment.apiUrl + '/languages';
+  constructor(private http: HttpClient) {}
 
-
-  constructor(private http:HttpClient){}
-
-
-  getLanguages(){
-
+  getLanguages() {
     return this.http.get<Language[]>(this.api);
-
   }
-
-
 }

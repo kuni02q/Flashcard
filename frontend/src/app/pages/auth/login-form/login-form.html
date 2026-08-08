@@ -1,9 +1,6 @@
 <form (ngSubmit)="login()">
-
   <div class="mb-3">
-    <label class="form-label">
-      Email vagy felhasználónév
-    </label>
+    <label class="form-label"> Email vagy felhasználónév </label>
 
     <input
       class="form-control"
@@ -11,15 +8,12 @@
       type="text"
       [(ngModel)]="identifier"
       (ngModelChange)="clearError()"
-      name="identifier">
+      name="identifier"
+    />
   </div>
 
-
-
   <div class="mb-4">
-    <label class="form-label">
-      Jelszó
-    </label>
+    <label class="form-label"> Jelszó </label>
 
     <input
       class="form-control"
@@ -27,25 +21,15 @@
       type="password"
       [(ngModel)]="password"
       (ngModelChange)="clearError()"
-      name="password">
+      name="password"
+    />
   </div>
 
-  @if(loginError){
-
+  @if (loginError) {
     <div class="alert alert-danger">
-
-      Sikertelen bejelentkezés!
-      Ellenőrizd az email címet/felhasználónevet és a jelszót.
-
+      Sikertelen bejelentkezés! Ellenőrizd az email címet/felhasználónevet és a jelszót.
     </div>
-
   }
 
-  <button
-    class="btn btn-primary w-100"
-    type="submit">
-
-    Bejelentkezés
-  </button>
-
+  <button class="btn btn-primary w-100" type="submit">Bejelentkezés</button>
 </form>

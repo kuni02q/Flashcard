@@ -3,68 +3,43 @@ import { ApiService } from './api.service';
 import { LoginRequest } from '../models/login-request';
 import { RegisterRequest } from '../models/register-request';
 import { AuthResponse } from '../models/auth-response';
-import {BehaviorSubject} from 'rxjs';
-
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  private usernameSubject =
-    new BehaviorSubject<string | null>(
-      localStorage.getItem('username')
-    );
+  private usernameSubject = new BehaviorSubject<string | null>(localStorage.getItem('username'));
 
   username$ = this.usernameSubject.asObservable();
 
+  constructor(private api: ApiService) {}
 
-  constructor(private api:ApiService){}
-
-
-  login(request:LoginRequest){
-
+  login(request: LoginRequest) {
     return this.api.post<AuthResponse>('/auth/login', request);
-
   }
 
-
-
-  register(request:RegisterRequest){
-
+  register(request: RegisterRequest) {
     return this.api.post<any>('/auth/register', request);
-
   }
 
-
-
-  saveAuth(response:AuthResponse){
-    localStorage.setItem('token',response.token);
+  saveAuth(response: AuthResponse) {
+    localStorage.setItem('token', response.token);
 
     localStorage.setItem('username', response.username);
 
     this.usernameSubject.next(response.username);
-
   }
 
-
-  logout(){
-
+  logout() {
     localStorage.removeItem('token');
 
     localStorage.removeItem('username');
 
     this.usernameSubject.next(null);
-
   }
 
-
-
-
-  isLoggedIn(){
+  isLoggedIn() {
     return !!localStorage.getItem('token');
   }
-
-
-
 }

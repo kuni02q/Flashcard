@@ -1,8 +1,7 @@
 import { WordPair } from './word-pair';
-import {QuizSettings} from './quiz-settings';
+import { QuizSettings } from './quiz-settings';
 
 export interface DictionaryGroup {
-
   id: number;
 
   name: string;
@@ -26,5 +25,4 @@ export interface DictionaryGroup {
   words: WordPair[];
 
   quizSettings: QuizSettings;
-
 }

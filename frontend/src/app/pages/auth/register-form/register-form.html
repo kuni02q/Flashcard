@@ -1,24 +1,18 @@
 <form (ngSubmit)="register()">
-
-
   <div class="mb-3">
-    <label class="form-label">
-      Felhasználónév
-    </label>
+    <label class="form-label"> Felhasználónév </label>
 
     <input
       class="form-control"
       [class.is-invalid]="registerError"
       [(ngModel)]="username"
       (ngModelChange)="clearError()"
-      name="username">
+      name="username"
+    />
   </div>
 
-
   <div class="mb-3">
-    <label class="form-label">
-      Email
-    </label>
+    <label class="form-label"> Email </label>
 
     <input
       class="form-control"
@@ -26,15 +20,12 @@
       type="email"
       [(ngModel)]="email"
       (ngModelChange)="clearError()"
-      name="email">
+      name="email"
+    />
   </div>
 
-
-
   <div class="mb-3">
-    <label class="form-label">
-      Jelszó
-    </label>
+    <label class="form-label"> Jelszó </label>
 
     <input
       class="form-control"
@@ -42,15 +33,12 @@
       type="password"
       [(ngModel)]="password"
       (ngModelChange)="clearError()"
-      name="password">
+      name="password"
+    />
   </div>
 
-
-
   <div class="mb-4">
-    <label class="form-label">
-      Jelszó újra
-    </label>
+    <label class="form-label"> Jelszó újra </label>
 
     <input
       class="form-control"
@@ -58,25 +46,15 @@
       type="password"
       [(ngModel)]="confirmPassword"
       (ngModelChange)="clearError()"
-      name="confirmPassword">
+      name="confirmPassword"
+    />
   </div>
 
-
-  @if(registerError){
-
+  @if (registerError) {
     <div class="alert alert-danger">
-
-      {{errorMessage}}
-
+      {{ errorMessage }}
     </div>
   }
 
-
-  <button
-    class="btn btn-success w-100"
-    type="submit">
-
-    Regisztráció
-  </button>
-
+  <button class="btn btn-success w-100" type="submit">Regisztráció</button>
 </form>

@@ -1,5 +1,4 @@
 export interface WordPair {
-
   id: number;
 
   sourceWord: string;

@@ -1,231 +1,132 @@
 <div class="container py-5">
-
-  @if(loading) {
-
+  @if (loading) {
     <div class="text-center py-5">
-
       <div class="spinner-border"></div>
 
-      <p class="mt-3">
-        Quiz betöltése...
-      </p>
-
+      <p class="mt-3">Quiz betöltése...</p>
     </div>
 
-  }
-
-
-  @else if(finished) {
-
+  } @else if (finished) {
     <div class="row justify-content-center">
-
       <div class="col-md-7">
-
         <div class="card shadow-sm">
-
           <div class="card-body text-center p-5">
-
             <i class="bi bi-trophy fs-1"></i>
 
-            <h2 class="fw-bold mt-3">
-              Quiz befejezve!
-            </h2>
+            <h2 class="fw-bold mt-3">Quiz befejezve!</h2>
 
             <div class="row mt-4">
-
               <div class="col-6">
-
-                <div class="text-muted">
-                  Helyes
-                </div>
+                <div class="text-muted">Helyes</div>
 
                 <div class="fs-2 fw-bold text-success">
-                  {{correctAnswers}}
+                  {{ correctAnswers }}
                 </div>
-
               </div>
-
 
               <div class="col-6">
-
-                <div class="text-muted">
-                  Hibás
-                </div>
+                <div class="text-muted">Hibás</div>
 
                 <div class="fs-2 fw-bold text-danger">
-                  {{wrongAnswers}}
+                  {{ wrongAnswers }}
                 </div>
-
               </div>
-
             </div>
 
-
-            <button
-              class="btn btn-primary mt-4"
-              (click)="finishQuiz()">
-
-              Vissza a csoporthoz
-
-            </button>
-
+            <button class="btn btn-primary mt-4" (click)="finishQuiz()">Vissza a csoporthoz</button>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
-  }
-
-
-  @else if(currentQuestion) {
-
+  } @else if (currentQuestion) {
     <!-- FEJLÉC -->
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-
-      <button
-        class="btn btn-outline-secondary"
-        (click)="quitQuiz()">
-
+      <button class="btn btn-outline-secondary" (click)="quitQuiz()">
         <i class="bi bi-arrow-left"></i>
 
         Kilépés
       </button>
 
-
       <div class="text-muted">
-
-        {{currentQuestionNumber}}
+        {{ currentQuestionNumber }}
         /
-        {{totalQuestions}}
-
+        {{ totalQuestions }}
       </div>
-
     </div>
-
 
     <!-- PROGRESS -->
 
     <div class="progress mb-5">
-      <div
-        class="progress-bar"
-        [style.width.%]="progress">
-      </div>
+      <div class="progress-bar" [style.width.%]="progress"></div>
     </div>
-
 
     <!-- QUIZ KÁRTYA -->
 
     <div class="row justify-content-center">
-
       <div class="col-md-8 col-lg-6">
-
         <div class="card shadow-sm">
-
           <div class="card-body p-5 text-center">
-
-            <div class="text-muted mb-3">
-              Fordítsd le:
-            </div>
-
+            <div class="text-muted mb-3">Fordítsd le:</div>
 
             <div class="display-5 fw-bold mb-5">
-              {{currentQuestion.question}}
+              {{ currentQuestion.question }}
             </div>
 
-
-            @if(!answered) {
-
+            @if (!answered) {
               <input
                 #answerInput
                 type="text"
                 class="form-control form-control-lg text-center"
                 [(ngModel)]="answer"
                 placeholder="Írd be a fordítást..."
-              >
-
+              />
 
               <button
                 class="btn btn-primary btn-lg w-100 mt-3"
                 [disabled]="!answer.trim()"
-                (click)="submitAnswer()">
-
+                (click)="submitAnswer()"
+              >
                 Ellenőrzés
-
               </button>
 
-            }
-
-
-            @else {
-
-              @if(answerCorrect) {
-
+            } @else {
+              @if (answerCorrect) {
                 <div class="alert alert-success">
-
                   <i class="bi bi-check-circle-fill"></i>
 
                   Helyes válasz!
-
                 </div>
-
-              }
-              @else {
-
+              } @else {
                 <div class="alert alert-danger">
-
                   <i class="bi bi-x-circle-fill"></i>
 
                   Helytelen válasz.
 
                   <div class="mt-2">
-
                     Helyes válasz:
 
                     <strong>
-                      {{currentQuestion.correctAnswer}}
+                      {{ currentQuestion.correctAnswer }}
                     </strong>
-
                   </div>
-
                 </div>
-
               }
 
-
-              <button
-                class="btn btn-primary btn-lg w-100"
-                (click)="nextQuestion()">
-
-                @if(
-                  !answerCorrect &&
-                  settings?.mode === 'UNTIL_CORRECT'
-                  ) {
-
+              <button class="btn btn-primary btn-lg w-100" (click)="nextQuestion()">
+                @if (!answerCorrect && settings?.mode === 'UNTIL_CORRECT') {
                   Újra
-
-                }
-                @else {
+                } @else {
                   Következő
                 }
 
                 <i class="bi bi-arrow-right"></i>
-
               </button>
-
             }
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   }
-
 </div>

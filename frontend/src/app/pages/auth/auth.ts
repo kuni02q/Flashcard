@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {LoginForm} from './login-form/login-form';
-import {RegisterForm} from './register-form/register-form';
+import { LoginForm } from './login-form/login-form';
+import { RegisterForm } from './register-form/register-form';
 
 @Component({
   selector: 'app-auth',
@@ -10,7 +10,5 @@ import {RegisterForm} from './register-form/register-form';
   styleUrl: './auth.css',
 })
 export class Auth {
-
   loginSelected = true;
-
 }

@@ -1,7 +1,6 @@
-import {QuizQuestion} from './quiz-question';
+import { QuizQuestion } from './quiz-question';
 
 export interface QuizState {
-
   questions: QuizQuestion[];
 
   currentIndex: number;
@@ -15,5 +14,4 @@ export interface QuizState {
   answerCorrect: boolean;
 
   finished: boolean;
-
 }

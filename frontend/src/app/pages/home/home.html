@@ -1,101 +1,33 @@
 <div class="container mt-4">
-
-
   <div class="row mb-4 align-items-center">
-
-
     <div class="col-md-6 mx-auto">
-
-      <input
-        class="form-control"
-        placeholder="Csoport keresése..."
-      >
-
+      <input class="form-control" placeholder="Csoport keresése..." />
     </div>
-
-
 
     <div class="col-md-2">
-
       <select class="form-select">
+        <option>Név szerint</option>
 
-        <option>
-          Név szerint
-        </option>
+        <option>Legutóbb használt</option>
 
-        <option>
-          Legutóbb használt
-        </option>
-
-        <option>
-          Szópárok száma
-        </option>
-
-
+        <option>Szópárok száma</option>
       </select>
-
     </div>
-
-
   </div>
 
-
-
-
-
   <div class="mb-4">
-
-    <button class="btn btn-primary"
-            (click)="showCreateModal=true">
-
+    <button class="btn btn-primary" (click)="openCreateModal()">
       <i class="bi bi-plus-lg"></i>
 
       Új csoport
-
     </button>
-
   </div>
-
-
-
 
   <div class="row g-4">
-
-
-    @for(group of groups; track group.id){
-
-
+    @for (group of groups; track group.id) {
       <div class="col-md-4">
-
-
-        <app-group-card
-
-          [group]="group"
-
-          (delete)="deleteGroup($event)"
-
-        ></app-group-card>
-
-
+        <app-group-card [group]="group" (delete)="deleteGroup($event)"></app-group-card>
       </div>
-
-
     }
-
-
   </div>
-
-
 </div>
-
-@if(showCreateModal){
-
-  <app-create-group-modal
-
-    (close)="showCreateModal=false"
-
-    (created)="groupCreated()"
-
-  ></app-create-group-modal>
-
-}

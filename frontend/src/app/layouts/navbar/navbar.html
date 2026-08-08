@@ -1,112 +1,73 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-
   <div class="container">
-
-    <a class="navbar-brand" routerLink="/">
-      Szótár
-    </a>
+    <a class="navbar-brand" routerLink="/"> Szótár </a>
 
     <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbar">
-
+      (click)="isNavbarCollapsed = !isNavbarCollapsed"
+      [attr.aria-expanded]="!isNavbarCollapsed"
+    >
       <span class="navbar-toggler-icon"></span>
-
     </button>
 
-    <div
-      class="collapse navbar-collapse"
-      id="navbar">
-
+    <div class="navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav me-auto">
-
         <li class="nav-item">
-
           <a
             routerLink="/"
             routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact:true}"
-            class="nav-link">
-
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link"
+          >
             Főoldal
-
           </a>
-
         </li>
-
       </ul>
 
-
       <div class="d-flex align-items-center gap-2">
-
         <button
           type="button"
           class="btn btn-outline-secondary theme-toggle"
+          ngbTooltip="Téma váltása"
           (click)="toggleTheme()"
           [attr.aria-label]="
             themeService.currentTheme === 'light'
               ? 'Dark mód bekapcsolása'
               : 'Light mód bekapcsolása'
-          ">
-
+          "
+        >
           @if (themeService.currentTheme === 'light') {
-
             <i class="bi bi-moon-fill"></i>
-
           } @else {
-
             <i class="bi bi-sun-fill"></i>
-
           }
         </button>
 
-
-        @if(username$ | async; as username) {
-
-          <div class="dropdown">
+        @if (username$ | async; as username) {
+          <div ngbDropdown>
             <button
               class="btn btn-outline-secondary dropdown-toggle"
               type="button"
-              data-bs-toggle="dropdown">
-
-              {{username}}
+              ngbDropdownToggle
+            >
+              {{ username }}
             </button>
 
-
-            <ul class="dropdown-menu dropdown-menu-end">
+            <ul ngbDropdownMenu class="dropdown-menu-end">
               <li>
-                <a class="dropdown-item" routerLink="/profile">
-                  Profil
-                </a>
+                <a ngbDropdownItem class="dropdown-item" routerLink="/profile"> Profil </a>
               </li>
 
-
               <li>
-                <button class="dropdown-item" (click)="logout()">
-                  Logout
-                </button>
+                <button ngbDropdownItem class="dropdown-item" (click)="logout()">Logout</button>
               </li>
-
             </ul>
-
           </div>
-
         } @else {
-
-
-          <a routerLink="/auth" class="btn btn-outline-secondary">
-            Login / Sign Up
-          </a>
-
+          <a routerLink="/auth" class="btn btn-outline-secondary"> Login / Sign Up </a>
         }
-
       </div>
-
-
     </div>
-
   </div>
-
 </nav>

@@ -1,118 +1,50 @@
-<div class="modal-backdrop" (click)="$event.stopPropagation()">
+<div class="modal-header">
+  <h3 class="modal-title fs-5">Kikérdezés beállításai</h3>
+  <button type="button" class="btn-close" aria-label="Bezárás" (click)="closeModal()"></button>
+</div>
 
-  <div class="modal-box bg-body text-body" (click)="$event.stopPropagation()">
-
-    <h3 class="mb-4">
-      Kikérdezés beállításai
-    </h3>
-
-
-    <div class="mb-4">
-
-      <label class="form-label">
-        Kikérdezés iránya
-      </label>
-
-      <button
-        type="button"
-        class="btn btn-outline-primary w-100 quiz-direction-button"
-        (click)="toggleDirection()">
-
-        @if(direction === 'SOURCE_TO_TARGET') {
-
-          <span>
-            {{sourceLanguageName}}
-          </span>
-
-          <i class="bi bi-arrow-right mx-3"></i>
-
-          <span>
-            {{targetLanguageName}}
-          </span>
-
-        }
-        @else {
-
-          <span>
-            {{targetLanguageName}}
-          </span>
-
-          <i class="bi bi-arrow-right mx-3"></i>
-
-          <span>
-            {{sourceLanguageName}}
-          </span>
-
-        }
-
-      </button>
-
-
-      <small class="text-muted">
-        Kattints a sorrend megfordításához.
-      </small>
-
-    </div>
-
-
-    <div class="mb-3">
-
-      <label class="form-label">
-        Kikérdezés módja
-      </label>
-
-      <select
-        class="form-select"
-        [(ngModel)]="mode"
-        (ngModelChange)="modeChanged()">
-
-        <option value="ONCE">
-          Minden szó egyszer
-        </option>
-
-        <option value="UNTIL_CORRECT">
-          Hibás szavak ismétlése
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="mb-4">
-
-      <label class="form-label">
-        Szópárok száma
-      </label>
-
-      <input
-        type="number"
-        class="form-control"
-        [(ngModel)]="wordCount"
-        (ngModelChange)="wordCountChanged()"
-        min="1"
-        [max]="maxWordCount"
-      >
-
-      <small class="text-muted">
-        Maximum: {{maxWordCount}}
-      </small>
-
-    </div>
-
-
-    <div class="d-flex justify-content-end gap-2">
-
-      <button
-        class="btn btn-secondary"
-        (click)="closeModal()">
-
-        Bezárás
-      </button>
-
-
-    </div>
-
+<div class="modal-body">
+  <div class="mb-4">
+    <label class="form-label">Kikérdezés iránya</label>
+    <button
+      type="button"
+      class="btn btn-outline-primary w-100 quiz-direction-button"
+      (click)="toggleDirection()"
+    >
+      @if (direction === 'SOURCE_TO_TARGET') {
+        <span>{{ sourceLanguageName }}</span
+        ><i class="bi bi-arrow-right mx-3"></i><span>{{ targetLanguageName }}</span>
+      } @else {
+        <span>{{ targetLanguageName }}</span
+        ><i class="bi bi-arrow-right mx-3"></i><span>{{ sourceLanguageName }}</span>
+      }
+    </button>
+    <small class="text-muted">Kattints a sorrend megfordításához.</small>
   </div>
 
+  <div class="mb-3">
+    <label class="form-label" for="quiz-mode">Kikérdezés módja</label>
+    <select id="quiz-mode" class="form-select" [(ngModel)]="mode" (ngModelChange)="modeChanged()">
+      <option value="ONCE">Minden szó egyszer</option>
+      <option value="UNTIL_CORRECT">Hibás szavak ismétlése</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="form-label" for="quiz-word-count">Szópárok száma</label>
+    <input
+      id="quiz-word-count"
+      type="number"
+      class="form-control"
+      [(ngModel)]="wordCount"
+      (ngModelChange)="wordCountChanged()"
+      min="1"
+      [max]="maxWordCount"
+    />
+    <small class="text-muted">Maximum: {{ maxWordCount }}</small>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">Bezárás</button>
 </div>
