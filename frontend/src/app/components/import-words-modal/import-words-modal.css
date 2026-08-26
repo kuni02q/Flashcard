@@ -1,3 +1,13 @@
 :host {
   display: block;
 }
+
+.preview-table-container{
+  max-height: 400px;
+  overflow: auto;
+}
+
+.preview-table-container thead th {
+  position: sticky;
+  top: 0;
+}

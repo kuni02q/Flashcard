@@ -146,7 +146,7 @@
           </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive words-table-container">
           <table class="table table-hover align-middle mb-0">
             <thead>
               <tr>
@@ -234,6 +234,7 @@
                   <td>
                     @if (editingWordId === word.id) {
                       <input
+                        #editingWordInput
                         type="text"
                         class="form-control"
                         [(ngModel)]="word.sourceWord"
@@ -309,7 +310,6 @@
 
                       <button
                         class="btn btn-outline-secondary btn-sm me-1"
-                        [disabled]="editingWordId !== null || addingWord"
                         (click)="editWord(word)"
                         title="Szerkesztés"
                       >
@@ -320,7 +320,6 @@
 
                       <button
                         class="btn btn-outline-danger btn-sm"
-                        [disabled]="editingWordId !== null || addingWord"
                         (click)="deleteWord(word)"
                         title="Törlés"
                       >

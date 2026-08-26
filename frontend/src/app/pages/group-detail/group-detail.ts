@@ -38,6 +38,9 @@ export class GroupDetail implements OnInit {
   @ViewChild('newSourceInput')
   newSourceInput?: ElementRef<HTMLInputElement>;
 
+  @ViewChild('editingWordInput')
+  editingWordInput?: ElementRef<HTMLInputElement>;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -168,6 +171,10 @@ export class GroupDetail implements OnInit {
     }
 
     this.editingWordId = word.id;
+
+    this.cdr.detectChanges();
+
+    this.editingWordInput?.nativeElement.focus();
   }
 
   saveWord(word: WordPair) {
@@ -205,16 +212,18 @@ export class GroupDetail implements OnInit {
   }
 
   async deleteWord(word: WordPair) {
+
+    if (this.addingWord || this.editingWordId !== null) {
+      return;
+    }
+
     const result = await this.alertService.confirm(
       'Biztosan törlöd?',
       'A művelet nem vonható vissza.',
     );
     if (!result.isConfirmed) return;
 
-    if (
-      false &&
-      !confirm(`Biztosan törlöd a(z) "${word.sourceWord}" - "${word.targetWord}" szópárt?`)
-    ) {
+    if (false && !confirm(`Biztosan törlöd a(z) "${word.sourceWord}" - "${word.targetWord}" szópárt?`)) {
       return;
     }
 
