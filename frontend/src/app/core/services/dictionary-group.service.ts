@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { DictionaryGroupCard } from '../models/dictionary-group-card';
 import { DictionaryGroup } from '../models/dictionary-group';
 import { QuizSettings } from '../models/quiz-settings';
+import {UpdateGroupRequest} from '../models/update-group-request';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,10 @@ export class DictionaryGroupService {
 
   createGroup(data: any) {
     return this.http.post(this.api, data);
+  }
+
+  updateGroup(id: number, request: UpdateGroupRequest) {
+    return this.http.put<DictionaryGroup>(`${this.api}/${id}`, request);
   }
 
   deleteGroup(id: number) {

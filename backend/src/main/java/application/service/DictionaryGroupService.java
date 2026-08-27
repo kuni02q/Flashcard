@@ -133,9 +133,17 @@ public class DictionaryGroupService {
         checkOwner(group,user);
 
 
-        group.setName(name);
+        if (name == null || name.isBlank()) {
+            throw new RuntimeException("Group name is required");
+        }
 
-        group.setDescription(description);
+        if (visibility == null) {
+            throw new RuntimeException("Visibility is required");
+        }
+
+        group.setName(name.trim());
+
+        group.setDescription(description == null || description.isBlank() ? null : description.trim());
 
         group.setVisibility(visibility);
 

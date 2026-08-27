@@ -8,9 +8,82 @@
       </button>
 
       @if (group) {
-        <h1 class="fw-bold mb-2">
-          {{ group.name }}
-        </h1>
+        @if (editingGroup) {
+          <div class="mb-3">
+            <label for="group-name" class="form-label fw-semibold">
+              Csoport neve
+            </label>
+
+            <input
+              id="group-name"
+              type="text"
+              class="form-control form-control-lg"
+              [(ngModel)]="editedGroupName"
+              [disabled]="savingGroup"
+              maxlength="255"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="group-description" class="form-label fw-semibold">
+              Leírás
+            </label>
+
+            <textarea
+              id="group-description"
+              class="form-control"
+              rows="3"
+              [(ngModel)]="editedGroupDescription"
+              [disabled]="savingGroup"
+              placeholder="Opcionális leírás"
+            ></textarea>
+          </div>
+
+          <div class="d-flex gap-2 mb-3">
+            <button
+              class="btn btn-success"
+              [disabled]="savingGroup || !editedGroupName.trim()"
+              (click)="saveGroup()"
+            >
+              <i class="bi bi-check-lg"></i>
+              Mentés
+            </button>
+
+            <button
+              class="btn btn-outline-secondary"
+              [disabled]="savingGroup"
+              (click)="cancelGroupEdit()"
+            >
+              <i class="bi bi-x-lg"></i>
+              Mégse
+            </button>
+          </div>
+        } @else {
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <h1 class="fw-bold mb-0">
+              {{ group.name }}
+            </h1>
+
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              [disabled]="addingWord || editingWordId !== null"
+              (click)="startGroupEdit()"
+              title="Csoport szerkesztése"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+          </div>
+
+          @if (group.description) {
+            <p class="text-muted mb-2">
+              {{ group.description }}
+            </p>
+          } @else {
+            <p class="text-muted fst-italic mb-2">
+              Nincs leírás.
+            </p>
+          }
+        }
 
         <p class="text-muted mb-0">
           <i class="bi bi-translate"></i>

@@ -11,6 +11,7 @@ import { QuizSettings } from '../../core/models/quiz-settings';
 import { ImportWordsModal } from '../../components/import-words-modal/import-words-modal';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from '../../core/services/alert.service';
+import {UpdateGroupRequest} from '../../core/models/update-group-request';
 
 @Component({
   selector: 'app-group-detail',
@@ -28,6 +29,12 @@ export class GroupDetail implements OnInit {
 
   addingWord = false;
   quickAddingWord = false;
+
+  editingGroup = false;
+  savingGroup = false;
+
+  editedGroupName = '';
+  editedGroupDescription = '';
 
   newSourceWord = '';
 
@@ -165,6 +172,65 @@ export class GroupDetail implements OnInit {
   goBack() {
     this.router.navigate(['/']);
   }
+
+
+  startGroupEdit() {
+    if (!this.group || this.addingWord || this.editingWordId !== null) {
+      return;
+    }
+
+    this.editedGroupName = this.group.name;
+    this.editedGroupDescription = this.group.description ?? '';
+    this.editingGroup = true;
+  }
+
+  cancelGroupEdit() {
+    this.editingGroup = false;
+    this.editedGroupName = '';
+    this.editedGroupDescription = '';
+  }
+
+  saveGroup() {
+    if (!this.group || this.savingGroup) {
+      return;
+    }
+
+    const name = this.editedGroupName.trim();
+    const description = this.editedGroupDescription.trim();
+
+    if (!name) {
+      this.alertService.warning('A csoport neve kötelező.');
+      return;
+    }
+
+    const request: UpdateGroupRequest = {
+      name,
+      description: description || null,
+      visibility: this.group.visibility,
+    };
+
+    this.savingGroup = true;
+
+    this.groupService.updateGroup(this.group.id, request).subscribe({
+      next: (updatedGroup) => {
+        this.group = updatedGroup;
+        this.editingGroup = false;
+        this.savingGroup = false;
+
+        this.alertService.success('A csoport adatai mentve.');
+        this.cdr.markForCheck();
+      },
+
+      error: (error) => {
+        console.error('Csoport módosítása sikertelen:', error);
+        this.savingGroup = false;
+
+        this.alertService.error('A csoport adatainak mentése sikertelen.');
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
 
   editWord(word: WordPair) {
     if (this.addingWord) {
