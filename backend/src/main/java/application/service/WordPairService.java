@@ -118,23 +118,6 @@ public class WordPairService {
     }
 
 
-    public void markLearned(Long id, User user) {
-
-
-        WordPair word =
-                wordRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Word not found"));
-
-        checkOwner(word.getGroup(), user);
-
-        word.setLearned(true);
-
-
-        wordRepository.save(word);
-
-    }
-
-
     public WordPairResponse registerQuizAnswer(
             Long id,
             User user,
@@ -151,8 +134,21 @@ public class WordPairService {
 
         if (correct) {
             word.setCorrectCount(word.getCorrectCount() + 1);
-
         }
+
+        word.setThirdLastAnswerCorrect(word.getSecondLastAnswerCorrect());
+        word.setSecondLastAnswerCorrect(word.getLastAnswerCorrect());
+        word.setLastAnswerCorrect(correct);
+
+
+        boolean perfectScore = word.getQuizCount() > 0 && word.getCorrectCount() == word.getQuizCount();
+
+        boolean lastThreeCorrect =
+                Boolean.TRUE.equals(word.getLastAnswerCorrect()) &&
+                        Boolean.TRUE.equals(word.getSecondLastAnswerCorrect()) &&
+                        Boolean.TRUE.equals(word.getThirdLastAnswerCorrect());
+
+        word.setLearned(perfectScore || lastThreeCorrect);
 
         return mapper.toResponse(wordRepository.save(word));
 

@@ -40,8 +40,10 @@
       {{ group.wordCount }}
     </p>
 
-    <div class="progress mb-3">
-      <div class="progress-bar" [style.width.%]="learnedPercent">{{ learnedPercent }}%</div>
+    <div class="progress mb-3 position-relative">
+      <div class="progress-bar" [style.width.%]="learnedPercent"></div>
+
+      <span class="progress-label">{{ learnedPercent }}%</span>
     </div>
 
     <p>

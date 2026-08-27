@@ -45,6 +45,16 @@ public class WordPair {
     @Builder.Default
     private int correctCount = 0;
 
+    @Column
+    private Boolean lastAnswerCorrect;
+
+    @Column
+    private Boolean secondLastAnswerCorrect;
+
+    @Column
+    private Boolean thirdLastAnswerCorrect;
+
+
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false)
     private DictionaryGroup group;

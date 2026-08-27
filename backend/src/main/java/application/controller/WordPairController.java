@@ -69,19 +69,7 @@ public class WordPairController {
                 request.getExampleSentence()
         );
     }
-
-
-    @PutMapping("/words/{id}/learned")
-    public void learned(
-            @PathVariable Long id,
-            Authentication authentication
-    ){
-
-        User user = getUser(authentication);
-
-        wordService.markLearned(id, user);
-
-    }
+    
 
 
     @PostMapping("/words/{id}/quiz-answer")
