@@ -48,7 +48,7 @@ export class GroupCard {
       return 0;
     }
 
-    return Math.round((this.group.learnedWordCount / this.group.wordCount) * 100);
+    return ((this.group.learnedWordCount / this.group.wordCount) * 100).toFixed(2);
   }
 
   deleteGroup(event: Event) {
