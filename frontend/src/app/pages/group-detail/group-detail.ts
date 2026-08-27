@@ -33,13 +33,18 @@ export class GroupDetail implements OnInit {
 
   newTargetWord = '';
 
-  savingNewWord = false;
 
   @ViewChild('newSourceInput')
   newSourceInput?: ElementRef<HTMLInputElement>;
 
   @ViewChild('editingWordInput')
   editingWordInput?: ElementRef<HTMLInputElement>;
+
+  searchTerm = '';
+  searchMatches: { wordId: number; field: 'source' | 'target' }[] = [];
+  currentSearchMatchIndex = -1;
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -343,4 +348,173 @@ export class GroupDetail implements OnInit {
 
     this.loadGroup(this.group.id);
   }
+
+
+
+  onSearchChange() {
+    this.updateSearchMatches();
+
+    if (this.searchMatches.length > 0) {
+      this.currentSearchMatchIndex = 0;
+
+      this.cdr.detectChanges();
+
+      this.scrollToCurrentSearchMatch();
+    } else {
+      this.currentSearchMatchIndex = -1;
+    }
+  }
+
+
+  updateSearchMatches() {
+    this.searchMatches = [];
+
+    if (!this.group || !this.searchTerm.trim()) {
+      return;
+    }
+
+    const search = this.searchTerm.trim().toLocaleLowerCase();
+
+    for (const word of this.group.words) {
+      if (word.sourceWord.toLocaleLowerCase().includes(search)) {
+        this.searchMatches.push({
+          wordId: word.id,
+          field: 'source',
+        });
+      }
+
+      if (word.targetWord.toLocaleLowerCase().includes(search)) {
+        this.searchMatches.push({
+          wordId: word.id,
+          field: 'target',
+        });
+      }
+    }
+  }
+
+
+  nextSearchMatch() {
+    if (this.searchMatches.length === 0) {
+      return;
+    }
+
+    this.currentSearchMatchIndex = (this.currentSearchMatchIndex + 1) % this.searchMatches.length;
+
+    this.cdr.detectChanges();
+
+    this.scrollToCurrentSearchMatch();
+  }
+
+
+  previousSearchMatch() {
+    if (this.searchMatches.length === 0) {
+      return;
+    }
+
+    this.currentSearchMatchIndex =
+      (this.currentSearchMatchIndex - 1 + this.searchMatches.length) %
+      this.searchMatches.length;
+
+    this.cdr.detectChanges();
+
+    this.scrollToCurrentSearchMatch();
+  }
+
+
+  onSearchKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+
+      if (event.shiftKey) {
+        this.previousSearchMatch();
+      } else {
+        this.nextSearchMatch();
+      }
+    }
+
+    if (event.key === 'Escape') {
+      this.clearSearch();
+    }
+  }
+
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.searchMatches = [];
+    this.currentSearchMatchIndex = -1;
+  }
+
+
+  isCurrentSearchMatch(wordId: number, field: 'source' | 'target'): boolean {
+    if (
+      this.currentSearchMatchIndex < 0 ||
+      this.currentSearchMatchIndex >= this.searchMatches.length
+    ) {
+      return false;
+    }
+
+    const currentMatch = this.searchMatches[this.currentSearchMatchIndex];
+
+    return (
+      currentMatch.wordId === wordId &&
+      currentMatch.field === field
+    );
+  }
+
+
+  highlightSearchTerm(text: string): string {
+    if (!this.searchTerm.trim()) {
+      return this.escapeHtml(text);
+    }
+
+    const search = this.searchTerm.trim();
+
+    const escapedText = this.escapeHtml(text);
+    const escapedSearch = this.escapeRegExp(search);
+
+    const regex = new RegExp(`(${escapedSearch})`, 'gi');
+
+    return escapedText.replace(regex, '<mark class="search-highlight">$1</mark>',);
+  }
+
+
+  private escapeHtml(text: string): string {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+
+  private escapeRegExp(text: string): string {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+
+  private scrollToCurrentSearchMatch() {
+    if (this.currentSearchMatchIndex < 0) {
+      return;
+    }
+
+    const element = document.querySelector(
+      `[data-search-match-index="${this.currentSearchMatchIndex}"]`,
+    );
+
+    if (element) {
+      element.scrollIntoView({behavior: 'smooth', block: 'center',});
+    }
+  }
+
+  getSearchMatchIndex(wordId: number, field: 'source' | 'target'): number | null {
+    const index = this.searchMatches.findIndex(
+      (match) => match.wordId === wordId && match.field === field,
+    );
+
+    return index !== -1 ? index : null;
+  }
+
+
+
 }

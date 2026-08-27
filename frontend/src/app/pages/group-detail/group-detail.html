@@ -119,7 +119,87 @@
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="fw-bold mb-0">Szópárok</h2>
+          <!-- CÍM + KERESŐ -->
+          <div class="d-flex align-items-center gap-3">
+
+            <h2 class="fw-bold mb-0">Szópárok</h2>
+
+            <!-- KERESŐ -->
+            <div class="input-group input-group-sm search-box">
+
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Keresés..."
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="onSearchChange()"
+                (keydown)="onSearchKeydown($event)"
+              />
+
+              @if (searchTerm) {
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="clearSearch()"
+                  title="Keresés törlése"
+                >
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              }
+
+            </div>
+
+            <!-- TALÁLATOK -->
+            @if (searchTerm.trim()) {
+              <div class="search-results-info">
+
+                @if (searchMatches.length > 0) {
+                  <span>
+            {{ currentSearchMatchIndex + 1 }}
+                    /
+                    {{ searchMatches.length }}
+          </span>
+                } @else {
+                  <span class="text-muted">
+            Nincs találat
+          </span>
+                }
+
+              </div>
+
+
+              <!-- ELŐZŐ / KÖVETKEZŐ -->
+              <div class="btn-group btn-group-sm">
+
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  [disabled]="searchMatches.length === 0"
+                  (click)="previousSearchMatch()"
+                  title="Előző találat"
+                >
+                  <i class="bi bi-chevron-up"></i>
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  [disabled]="searchMatches.length === 0"
+                  (click)="nextSearchMatch()"
+                  title="Következő találat"
+                >
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+
+              </div>
+            }
+
+          </div>
+
 
           <div class="d-flex align-items-center gap-2">
             <span class="badge text-bg-secondary"> {{ group.words.length }} db </span>
@@ -149,27 +229,27 @@
         <div class="table-responsive words-table-container">
           <table class="table table-hover align-middle mb-0">
             <thead>
-              <tr>
-                <th style="width: 60px">#</th>
+            <tr>
+              <th style="width: 60px">#</th>
 
-                <th>
-                  {{ group.sourceLanguage.name }}
-                </th>
+              <th>
+                {{ group.sourceLanguage.name }}
+              </th>
 
-                <th>
-                  {{ group.targetLanguage.name }}
-                </th>
+              <th>
+                {{ group.targetLanguage.name }}
+              </th>
 
-                <th class="text-center" style="width: 120px">Memorizált</th>
+              <th class="text-center" style="width: 120px">Memorizált</th>
 
-                <th class="text-center" style="width: 160px">Kikérdezés</th>
+              <th class="text-center" style="width: 160px">Kikérdezés</th>
 
-                <th class="text-end" style="width: 120px">Műveletek</th>
-              </tr>
+              <th class="text-end" style="width: 120px">Műveletek</th>
+            </tr>
             </thead>
 
             <tbody>
-              <!-- ÚJ SZÓPÁR -->
+            <!-- ÚJ SZÓPÁR -->
 
               @if (addingWord) {
                 <tr>
@@ -221,7 +301,7 @@
                 </tr>
               }
 
-              <!-- MEGLÉVŐ SZÓPÁROK -->
+            <!-- MEGLÉVŐ SZÓPÁROK -->
 
               @for (word of group.words; track word.id; let i = $index) {
                 <tr>
@@ -241,9 +321,14 @@
                         (keydown.enter)="saveWord(word)"
                       />
                     } @else {
-                      <strong>
-                        {{ word.sourceWord }}
-                      </strong>
+                      <strong
+                        [innerHTML]="highlightSearchTerm(word.sourceWord)"
+                        [attr.data-search-match-index]="
+                          getSearchMatchIndex(word.id, 'source')"
+                        [class.current-search-match]="
+                          isCurrentSearchMatch(word.id, 'source')
+                        "
+                      ></strong>
                     }
                   </td>
 
@@ -258,7 +343,14 @@
                         (keydown.enter)="saveWord(word)"
                       />
                     } @else {
-                      {{ word.targetWord }}
+                      <span
+                        [innerHTML]="highlightSearchTerm(word.targetWord)"
+                        [attr.data-search-match-index]="
+                          getSearchMatchIndex(word.id, 'target')"
+                        [class.current-search-match]="
+                          isCurrentSearchMatch(word.id, 'target')
+                        "
+                      ></span>
                     }
                   </td>
 
@@ -330,7 +422,7 @@
                 </tr>
               }
 
-              <!-- ÜRES LISTA -->
+            <!-- ÜRES LISTA -->
 
               @if (group.words.length === 0 && !addingWord) {
                 <tr>
