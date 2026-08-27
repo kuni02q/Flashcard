@@ -1,10 +1,19 @@
 <div class="container mt-4">
   <div class="row mb-4 align-items-center">
-    <div class="col-md-6 mx-auto">
+
+    <div class="col-md-auto">
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="bi bi-plus-lg"></i>
+
+        Új csoport
+      </button>
+    </div>
+
+    <div class="col-md">
       <input class="form-control" placeholder="Csoport keresése..." />
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-auto">
       <select class="form-select">
         <option>Név szerint</option>
 
@@ -13,15 +22,11 @@
         <option>Szópárok száma</option>
       </select>
     </div>
+
+
   </div>
 
-  <div class="mb-4">
-    <button class="btn btn-primary" (click)="openCreateModal()">
-      <i class="bi bi-plus-lg"></i>
 
-      Új csoport
-    </button>
-  </div>
 
   <div class="row g-4">
     @for (group of groups; track group.id) {
