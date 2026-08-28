@@ -19,16 +19,24 @@ export class AlertService {
     return this.toast(message, 'info', 2500);
   }
 
-  confirm(title: string, text: string): Promise<SweetAlertResult> {
+  confirm(
+    title: string,
+    text: string,
+    confirmButtonText = 'Igen',
+  ): Promise<SweetAlertResult> {
     return Swal.fire({
       title,
       text,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Igen, törlöm',
+      confirmButtonText,
       cancelButtonText: 'Mégse',
       reverseButtons: true,
     });
+  }
+
+  confirmDelete(title: string, text: string): Promise<SweetAlertResult> {
+    return this.confirm(title, text, 'Igen, törlöm');
   }
 
   httpError(error: unknown, fallbackMessage: string): Promise<SweetAlertResult> {

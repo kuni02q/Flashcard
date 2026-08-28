@@ -4,6 +4,19 @@
       {{ group.name }}
     </h3>
 
+    @if (group.visibility === 'PUBLIC') {
+      <span class="badge text-bg-success">
+        <i class="bi bi-globe2 me-1"></i>
+        Nyilvános
+      </span>
+    } @else {
+      <span class="badge text-bg-secondary">
+        <i class="bi bi-lock-fill me-1"></i>
+        Privát
+      </span>
+    }
+
+
     <p class="text-muted">
       {{ group.description }}
     </p>

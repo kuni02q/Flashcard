@@ -2,6 +2,7 @@ package application.controller;
 
 
 import application.dto.request.QuizSettingsRequest;
+import application.dto.request.UpdateGroupVisibilityRequest;
 import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
 import application.model.User;
@@ -78,7 +79,8 @@ public class DictionaryGroupController {
                 request.getName(),
                 request.getDescription(),
                 request.getSourceLanguageId(),
-                request.getTargetLanguageId()
+                request.getTargetLanguageId(),
+                request.getVisibility()
         );
 
     }
@@ -98,10 +100,25 @@ public class DictionaryGroupController {
                 id,
                 user,
                 request.getName(),
-                request.getDescription(),
-                request.getVisibility()
+                request.getDescription()
         );
 
+    }
+
+
+    @PatchMapping("/{id}/visibility")
+    public DictionaryGroupResponse updateVisibility(
+            @PathVariable Long id,
+            Authentication authentication,
+            @RequestBody UpdateGroupVisibilityRequest request
+    ) {
+        User user = getUser(authentication);
+
+        return groupService.updateVisibility(
+                id,
+                user,
+                request.getVisibility()
+        );
     }
 
 

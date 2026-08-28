@@ -57,6 +57,26 @@
       }
     </div>
   </div>
+
+
+  <div class="form-check mt-3">
+    <input
+      id="group-is-public"
+      type="checkbox"
+      class="form-check-input"
+      [(ngModel)]="isPublic"
+      name="isPublic"
+    />
+
+    <label class="form-check-label" for="group-is-public">
+      Nyilvános csoport
+    </label>
+
+    <div class="form-text">
+      A nyilvános csoportot más felhasználók is megtekinthetik.
+    </div>
+  </div>
+
 </div>
 
 <div class="modal-footer">

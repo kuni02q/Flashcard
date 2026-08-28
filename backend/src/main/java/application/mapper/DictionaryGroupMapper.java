@@ -100,6 +100,8 @@ public class DictionaryGroupMapper {
 
                 group.getDescription(),
 
+                group.getVisibility(),
+
                 group.getSourceLanguage().getName(),
 
                 group.getTargetLanguage().getName(),

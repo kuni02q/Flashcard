@@ -70,7 +70,8 @@ public class DictionaryGroupService {
             String name,
             String description,
             Long sourceLanguageId,
-            Long targetLanguageId
+            Long targetLanguageId,
+            DictionaryGroup.Visibility visibility
     ){
 
 
@@ -96,7 +97,7 @@ public class DictionaryGroupService {
                         .description(description)
                         .sourceLanguage(sourceLanguage)
                         .targetLanguage(targetLanguage)
-                        .visibility(DictionaryGroup.Visibility.PRIVATE)
+                        .visibility(visibility == null ? DictionaryGroup.Visibility.PRIVATE : visibility)
                         .build();
 
         DictionaryGroup saved = groupRepository.save(group);
@@ -122,8 +123,7 @@ public class DictionaryGroupService {
             Long id,
             User user,
             String name,
-            String description,
-            DictionaryGroup.Visibility visibility
+            String description
     ){
 
 
@@ -137,20 +137,32 @@ public class DictionaryGroupService {
             throw new RuntimeException("Group name is required");
         }
 
-        if (visibility == null) {
-            throw new RuntimeException("Visibility is required");
-        }
-
         group.setName(name.trim());
 
         group.setDescription(description == null || description.isBlank() ? null : description.trim());
-
-        group.setVisibility(visibility);
 
 
 
         return mapper.toResponse(groupRepository.save(group));
 
+    }
+
+
+    public DictionaryGroupResponse updateVisibility(
+            Long id,
+            User user,
+            DictionaryGroup.Visibility visibility
+    ) {
+        DictionaryGroup group = getEntity(id);
+        checkOwner(group, user);
+
+        if (visibility == null) {
+            throw new RuntimeException("Visibility is required");
+        }
+
+        group.setVisibility(visibility);
+
+        return mapper.toResponse(groupRepository.save(group));
     }
 
 

@@ -1,6 +1,7 @@
 package application.dto.request;
 
 
+import application.model.DictionaryGroup;
 import lombok.Data;
 
 
@@ -15,6 +16,8 @@ public class CreateGroupRequest {
     private Long sourceLanguageId;
 
     private Long targetLanguageId;
+
+    private DictionaryGroup.Visibility visibility;
 
 
 }

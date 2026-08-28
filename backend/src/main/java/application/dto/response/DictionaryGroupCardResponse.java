@@ -20,6 +20,8 @@ public class DictionaryGroupCardResponse {
 
     private String description;
 
+    private DictionaryGroup.Visibility visibility;
+
 
     private String sourceLanguage;
 

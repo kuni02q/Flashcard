@@ -34,6 +34,8 @@ export class CreateGroupModal implements OnInit, AfterViewInit {
 
   targetSearch = '';
 
+  isPublic = false;
+
   @ViewChild('nameInput')
   nameInput?: ElementRef<HTMLInputElement>;
 
@@ -75,6 +77,7 @@ export class CreateGroupModal implements OnInit, AfterViewInit {
       description: this.description.trim(),
       sourceLanguageId: this.sourceLanguageId,
       targetLanguageId: this.targetLanguageId,
+      visibility: this.isPublic ? 'PUBLIC' : 'PRIVATE',
     };
 
     this.groupService.createGroup(data).subscribe({

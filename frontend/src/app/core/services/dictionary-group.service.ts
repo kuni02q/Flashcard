@@ -6,6 +6,7 @@ import { DictionaryGroupCard } from '../models/dictionary-group-card';
 import { DictionaryGroup } from '../models/dictionary-group';
 import { QuizSettings } from '../models/quiz-settings';
 import {UpdateGroupRequest} from '../models/update-group-request';
+import {UpdateGroupVisibilityRequest} from '../models/update-group-visibility-request';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +25,15 @@ export class DictionaryGroupService {
   }
 
   createGroup(data: any) {
-    return this.http.post(this.api, data);
+    return this.http.post<DictionaryGroup>(this.api, data);
   }
 
   updateGroup(id: number, request: UpdateGroupRequest) {
     return this.http.put<DictionaryGroup>(`${this.api}/${id}`, request);
+  }
+
+  updateVisibility(id: number, request: UpdateGroupVisibilityRequest) {
+    return this.http.patch<DictionaryGroup>(`${this.api}/${id}/visibility`, request);
   }
 
   deleteGroup(id: number) {

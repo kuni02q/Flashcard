@@ -33,6 +33,8 @@ export class GroupDetail implements OnInit {
   editingGroup = false;
   savingGroup = false;
 
+  savingVisibility = false;
+
   editedGroupName = '';
   editedGroupDescription = '';
 
@@ -148,7 +150,7 @@ export class GroupDetail implements OnInit {
       return;
     }
 
-    const result = await this.alertService.confirm(
+    const result = await this.alertService.confirmDelete(
       'Biztosan törlöd?',
       'A művelet nem vonható vissza.',
     );
@@ -206,7 +208,6 @@ export class GroupDetail implements OnInit {
     const request: UpdateGroupRequest = {
       name,
       description: description || null,
-      visibility: this.group.visibility,
     };
 
     this.savingGroup = true;
@@ -226,6 +227,50 @@ export class GroupDetail implements OnInit {
         this.savingGroup = false;
 
         this.alertService.error('A csoport adatainak mentése sikertelen.');
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+
+  async changeVisibility() {
+    if (!this.group || this.savingVisibility) {
+      return;
+    }
+
+    const visibility: 'PRIVATE' | 'PUBLIC' = this.group.visibility === 'PRIVATE' ? 'PUBLIC' : 'PRIVATE';
+
+    const becomesPublic = visibility === 'PUBLIC';
+
+    const result = await this.alertService.confirm(
+      becomesPublic
+        ? 'Nyilvánossá teszed a csoportot?'
+        : 'Priváttá teszed a csoportot?',
+      becomesPublic
+        ? 'A csoportot ezután más felhasználók is megtekinthetik.'
+        : 'A csoportot ezután csak te érheted el.',
+      becomesPublic ? 'Legyeb byilvános' : 'Legyen privát'
+    );
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    this.savingVisibility = true;
+
+    this.groupService.updateVisibility(this.group.id, { visibility }).subscribe({
+      next: (updatedGroup) => {
+        this.group = updatedGroup;
+        this.savingVisibility = false;
+
+        this.alertService.success('A csoport láthatósága frissítve.');
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('Láthatóság módosítása sikertelen:', error);
+        this.savingVisibility = false;
+
+        this.alertService.error('A láthatóság módosítása sikertelen.');
         this.cdr.markForCheck();
       },
     });
@@ -288,7 +333,7 @@ export class GroupDetail implements OnInit {
       return;
     }
 
-    const result = await this.alertService.confirm(
+    const result = await this.alertService.confirmDelete(
       'Biztosan törlöd?',
       'A művelet nem vonható vissza.',
     );

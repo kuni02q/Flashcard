@@ -1,7 +1,5 @@
 package application.dto.request;
 
-
-import application.model.DictionaryGroup;
 import lombok.Data;
 
 
@@ -12,8 +10,6 @@ public class UpdateGroupRequest {
     private String name;
 
     private String description;
-
-    private DictionaryGroup.Visibility visibility;
 
 
 }

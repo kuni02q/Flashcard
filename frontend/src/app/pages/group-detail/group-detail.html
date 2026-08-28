@@ -83,6 +83,38 @@
               Nincs leírás.
             </p>
           }
+
+
+
+          <div class="d-flex align-items-center gap-2 mb-2">
+            @if (group.visibility === 'PUBLIC') {
+              <span class="badge text-bg-success">
+                <i class="bi bi-globe2 me-1"></i>
+                Nyilvános
+              </span>
+            } @else {
+              <span class="badge text-bg-secondary">
+                <i class="bi bi-lock-fill me-1"></i>
+                Privát
+              </span>
+            }
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              [disabled]="savingVisibility || addingWord || editingWordId !== null"
+              (click)="changeVisibility()"
+            >
+              @if (group.visibility === 'PRIVATE') {
+                <i class="bi bi-globe2 me-1"></i>
+                Nyilvánossá tétel
+              } @else {
+                <i class="bi bi-lock-fill me-1"></i>
+                Priváttá tétel
+              }
+            </button>
+          </div>
+
         }
 
         <p class="text-muted mb-0">

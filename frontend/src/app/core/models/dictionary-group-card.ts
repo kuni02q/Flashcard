@@ -7,6 +7,8 @@ export interface DictionaryGroupCard {
 
   description: string;
 
+  visibility: 'PRIVATE' | 'PUBLIC';
+
   sourceLanguage: string;
 
   targetLanguage: string;
@@ -18,4 +20,5 @@ export interface DictionaryGroupCard {
   lastUsedAt: string | null;
 
   quizSettings: QuizSettings;
+
 }
