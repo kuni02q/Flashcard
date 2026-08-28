@@ -39,7 +39,7 @@ export class Home implements OnInit {
 
   deleteGroup(id: number): void {
     this.alertService
-      .confirm('Biztosan törlöd?', 'A művelet nem vonható vissza.')
+      .confirmDelete('Biztosan törlöd?', 'A művelet nem vonható vissza.')
       .then((result) => {
         if (result.isConfirmed) {
           this.deleteGroupFromBackend(id);

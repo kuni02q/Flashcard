@@ -13,14 +13,16 @@
 
     <div class="navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav me-auto">
+
         <li class="nav-item">
-          <a
-            routerLink="/"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="nav-link"
-          >
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
             Főoldal
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/public-groups" routerLinkActive="active" class="nav-link">
+            Publikus csoportok
           </a>
         </li>
       </ul>

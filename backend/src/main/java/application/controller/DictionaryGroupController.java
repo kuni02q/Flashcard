@@ -5,6 +5,8 @@ import application.dto.request.QuizSettingsRequest;
 import application.dto.request.UpdateGroupVisibilityRequest;
 import application.dto.response.DictionaryGroupCardResponse;
 import application.dto.response.DictionaryGroupResponse;
+import application.dto.response.PublicDictionaryGroupCardResponse;
+import application.dto.response.PublicDictionaryGroupResponse;
 import application.model.User;
 import application.repository.UserRepository;
 import application.service.DictionaryGroupService;
@@ -27,14 +29,6 @@ public class DictionaryGroupController {
     private final DictionaryGroupService groupService;
 
     private final UserRepository userRepository;
-
-
-    @GetMapping("/public")
-    public List<DictionaryGroupResponse> publicGroups(){
-
-        return groupService.getPublicGroups();
-
-    }
 
 
     @GetMapping("/my")
@@ -179,6 +173,39 @@ public class DictionaryGroupController {
                         new RuntimeException("User not found")
                 );
 
+    }
+
+    
+
+    @GetMapping("/public/cards")
+    public List<PublicDictionaryGroupCardResponse> publicGroupCards(
+            Authentication authentication
+    ) {
+        User user = getUser(authentication);
+
+        return groupService.getPublicGroupCards(user);
+    }
+
+
+
+    @PostMapping("/public/{id}/view")
+    public PublicDictionaryGroupResponse viewPublicGroup(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        User user = getUser(authentication);
+
+        return groupService.viewPublicGroup(id, user);
+    }
+
+    @PostMapping("/public/{id}/copy")
+    public DictionaryGroupResponse copyPublicGroup(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        User user = getUser(authentication);
+
+        return groupService.copyPublicGroup(id, user);
     }
 
 

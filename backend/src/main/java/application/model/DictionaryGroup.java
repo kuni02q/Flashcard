@@ -93,4 +93,13 @@ public class DictionaryGroup {
         TARGET_TO_SOURCE
 
     }
+
+    @Column(nullable = false)
+    @Builder.Default
+    private long viewCount = 0;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private long addCount = 0;
+
 }

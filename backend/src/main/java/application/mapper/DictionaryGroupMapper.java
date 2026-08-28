@@ -1,9 +1,7 @@
 package application.mapper;
 
 
-import application.dto.response.DictionaryGroupCardResponse;
-import application.dto.response.DictionaryGroupResponse;
-import application.dto.response.QuizSettingsResponse;
+import application.dto.response.*;
 import application.model.DictionaryGroup;
 import application.model.WordPair;
 import lombok.RequiredArgsConstructor;
@@ -116,6 +114,44 @@ public class DictionaryGroupMapper {
 
         );
 
+    }
+
+
+    public PublicDictionaryGroupCardResponse toPublicCardResponse(DictionaryGroup group) {
+
+        return new PublicDictionaryGroupCardResponse(
+                group.getId(),
+                group.getName(),
+                group.getDescription(),
+                group.getUser().getUsername(),
+                group.getSourceLanguage().getName(),
+                group.getTargetLanguage().getName(),
+                group.getWords().size(),
+                group.getViewCount(),
+                group.getAddCount()
+        );
+    }
+
+
+    public PublicDictionaryGroupResponse toPublicResponse(DictionaryGroup group) {
+
+        List<WordPairResponse> words = group.getWords()
+                .stream()
+                .map(wordPairMapper::toResponse)
+                .toList();
+
+        return new PublicDictionaryGroupResponse(
+                group.getId(),
+                group.getName(),
+                group.getDescription(),
+                group.getUser().getUsername(),
+                group.getSourceLanguage().getName(),
+                group.getTargetLanguage().getName(),
+                words,
+                words.size(),
+                group.getViewCount(),
+                group.getAddCount()
+        );
     }
 
 

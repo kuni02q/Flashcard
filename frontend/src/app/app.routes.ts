@@ -8,7 +8,8 @@ export const routes: Routes = [
   { path: 'groups/:id/quiz', loadComponent: () => import('./pages/quiz/quiz').then((c) => c.Quiz) },
   {
     path: 'groups/:id',
-    loadComponent: () => import('./pages/group-detail/group-detail').then((c) => c.GroupDetail),
-  },
+    loadComponent: () => import('./pages/group-detail/group-detail').then((c) => c.GroupDetail)},
+  {path: 'public-groups',
+    loadComponent:() => import('./pages/public-groups/public-groups').then((c) => c.PublicGroups)},
   { path: 'profile', component: Profile, canActivate: [authGuard] },
 ];

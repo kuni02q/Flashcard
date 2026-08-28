@@ -2,17 +2,17 @@ package application.service;
 
 
 import application.dto.request.QuizSettingsRequest;
-import application.dto.response.DictionaryGroupCardResponse;
-import application.dto.response.DictionaryGroupResponse;
-import application.dto.response.QuizSettingsResponse;
+import application.dto.response.*;
 import application.mapper.DictionaryGroupMapper;
 import application.model.DictionaryGroup;
 import application.model.Language;
 import application.model.User;
+import application.model.WordPair;
 import application.repository.DictionaryGroupRepository;
 import application.repository.LanguageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -262,6 +262,96 @@ public class DictionaryGroupService {
         return mapper.toResponse(saved);
 
     }
+
+
+
+    public List<PublicDictionaryGroupCardResponse> getPublicGroupCards(User currentUser) {
+        return groupRepository
+                .findByVisibilityAndUserNot(
+                        DictionaryGroup.Visibility.PUBLIC,
+                        currentUser
+                )
+                .stream()
+                .map(mapper::toPublicCardResponse)
+                .toList();
+    }
+
+    @Transactional
+    public PublicDictionaryGroupResponse viewPublicGroup(
+            Long id,
+            User currentUser
+    ) {
+        DictionaryGroup group = getEntity(id);
+
+        if (group.getVisibility() != DictionaryGroup.Visibility.PUBLIC) {
+            throw new RuntimeException("This group is not public");
+        }
+
+        if (group.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("Use your own group from the home page");
+        }
+
+        group.setViewCount(group.getViewCount() + 1);
+
+        DictionaryGroup saved = groupRepository.save(group);
+
+        return mapper.toPublicResponse(saved);
+    }
+
+    @Transactional
+    public DictionaryGroupResponse copyPublicGroup(
+            Long id,
+            User currentUser
+    ) {
+        DictionaryGroup original = getEntity(id);
+
+        if (original.getVisibility() != DictionaryGroup.Visibility.PUBLIC) {
+            throw new RuntimeException("This group is not public");
+        }
+
+        if (original.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("You cannot copy your own group");
+        }
+
+        DictionaryGroup copy = DictionaryGroup.builder()
+                .user(currentUser)
+                .name(copyName(original.getName()))
+                .description(original.getDescription())
+                .sourceLanguage(original.getSourceLanguage())
+                .targetLanguage(original.getTargetLanguage())
+                .visibility(DictionaryGroup.Visibility.PRIVATE)
+                .build();
+
+        for (WordPair originalWord : original.getWords()) {
+            WordPair copiedWord = WordPair.builder()
+                    .group(copy)
+                    .sourceWord(originalWord.getSourceWord())
+                    .targetWord(originalWord.getTargetWord())
+                    .exampleSentence(originalWord.getExampleSentence())
+                    .build();
+
+            copy.getWords().add(copiedWord);
+        }
+
+        DictionaryGroup savedCopy = groupRepository.save(copy);
+
+        original.setAddCount(original.getAddCount() + 1);
+        groupRepository.save(original);
+
+        return mapper.toResponse(savedCopy);
+    }
+
+    private String copyName(String originalName) {
+        String suffix = " (másolat)";
+        int maxLength = 255;
+
+        if (originalName.length() + suffix.length() <= maxLength) {
+            return originalName + suffix;
+        }
+
+        return originalName.substring(0, maxLength - suffix.length()) + suffix;
+    }
+
 
 
 }

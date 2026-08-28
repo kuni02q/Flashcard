@@ -1,0 +1,126 @@
+<div class="modal-header">
+  <div>
+    <h5 class="fw-bold mb-1">{{ group?.name || 'Csoport betöltése' }}</h5>
+
+    @if (group) {
+      <span class="badge text-bg-success">
+        <i class="bi bi-globe2 me-1"></i>
+        Nyilvános
+      </span>
+    }
+  </div>
+
+  <button
+    type="button"
+    class="btn-close"
+    [disabled]="adding"
+    (click)="cancel()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  @if (loading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+    </div>
+  }
+
+  @if (group) {
+    <p class="text-muted">
+      {{ group.description || 'Nincs leírás.' }}
+    </p>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="border rounded p-3 h-100">
+          <div class="small text-muted">Készítő</div>
+          <div class="fw-semibold">{{ group.ownerName }}</div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="border rounded p-3 h-100">
+          <div class="small text-muted">Nyelvpár</div>
+          <div class="fw-semibold">
+            {{ group.sourceLanguage }} - {{ group.targetLanguage }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="border rounded p-3 h-100">
+          <div class="small text-muted">Szópárok</div>
+          <div class="fw-semibold">{{ group.wordCount }} db</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-3 text-muted small mb-3">
+      <span>
+        <i class="bi bi-eye me-1"></i>
+        {{ group.viewCount }} megtekintés
+      </span>
+
+      <span>
+        <i class="bi bi-collection-plus me-1"></i>
+        {{ group.addCount }} hozzáadás
+      </span>
+    </div>
+
+    <div class="table-responsive border rounded">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+        <tr>
+          <th style="width: 60px">#</th>
+          <th>{{ group.sourceLanguage }}</th>
+          <th>{{ group.targetLanguage }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @for (word of group.words; track word.id; let i = $index) {
+            <tr>
+              <td>{{ i + 1 }}.</td>
+              <td><strong>{{ word.sourceWord }}</strong></td>
+              <td>{{ word.targetWord }}</td>
+            </tr>
+          }
+
+          @if (group.words.length === 0) {
+            <tr>
+              <td colspan="3" class="text-center text-muted py-4">
+                A csoport nem tartalmaz szópárokat.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-secondary"
+    [disabled]="adding"
+    (click)="cancel()"
+  >
+    Mégse
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="!group || adding"
+    (click)="addToMyGroups()"
+  >
+    @if (adding) {
+      <span class="spinner-border spinner-border-sm me-2"></span>
+      Hozzáadás...
+    } @else {
+      <i class="bi bi-collection-plus me-1"></i>
+      Hozzáadás a saját csoportjaimhoz
+    }
+  </button>
+</div>

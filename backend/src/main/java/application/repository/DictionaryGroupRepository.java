@@ -18,4 +18,9 @@ public interface DictionaryGroupRepository extends JpaRepository<DictionaryGroup
             User user,
             DictionaryGroup.Visibility visibility);
 
+    List<DictionaryGroup> findByVisibilityAndUserNot(
+            DictionaryGroup.Visibility visibility,
+            User user
+    );
+
 }
