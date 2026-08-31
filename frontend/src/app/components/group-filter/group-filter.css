@@ -1,0 +1,153 @@
+.filter-wrapper {
+  width: 100%;
+}
+
+
+/*
+ * A toolbar magasságát nem befolyásolja,
+ * hogy a filter-panel meg van-e nyitva.
+ */
+.filter-toolbar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+
+/*
+ * Keresőmező
+ */
+.search-wrapper {
+  position: relative;
+}
+
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.9rem;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+}
+
+
+.search-input {
+  padding-left: 2.5rem;
+  min-height: 42px;
+}
+
+
+/*
+ * Szűrő gomb
+ */
+.filter-button {
+  min-height: 42px;
+  white-space: nowrap;
+  background-color: transparent;
+  color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
+}
+
+
+.filter-button:hover {
+  background-color: var(--bs-secondary);
+  color: var(--bs-white);
+  border-color: var(--bs-secondary);
+}
+
+
+
+.filter-button.active {
+  border-color: var(--bs-primary);
+  color: var(--bs-primary);
+  background-color: transparent;
+}
+
+.filter-button.active:hover {
+  background-color: var(--bs-primary);
+  color: #fff;
+  border-color: var(--bs-primary);
+}
+
+
+/*
+ * Kis pont az aktív filter jelzésére.
+ */
+.filter-active-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+  border-radius: 50%;
+  background-color: var(--bs-primary);
+}
+
+
+/*
+ * A lenyíló filter panel
+ */
+.filter-panel {
+  padding: 1.25rem;
+
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+
+  background: var(--bs-body-bg);
+
+  box-shadow:
+    0 0.25rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+
+/*
+ * Panel fejléc
+ */
+.filter-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 1.25rem;
+}
+
+
+/*
+ * Panel alja
+ */
+.filter-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+
+  border-top: 1px solid var(--bs-border-color);
+}
+
+
+/*
+ * Mobil
+ */
+@media (max-width: 576px) {
+
+  .filter-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+
+  .filter-button {
+    width: 100%;
+  }
+
+
+  .filter-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+}

@@ -6,19 +6,33 @@ import { DictionaryGroupService } from '../../core/services/dictionary-group.ser
 import { AlertService } from '../../core/services/alert.service';
 import { PublicGroupCard } from '../../components/public-group-card/public-group-card';
 import { PublicGroupPreviewModal } from '../../components/public-group-preview-modal/public-group-preview-modal';
+import {GroupFilterComponent, type GroupFilterState,} from '../../components/group-filter/group-filter';
 
 @Component({
   selector: 'app-public-groups',
   standalone: true,
-  imports: [FormsModule, PublicGroupCard],
+  imports: [PublicGroupCard, GroupFilterComponent],
   templateUrl: './public-groups.html',
   styleUrl: './public-groups.css',
 })
 export class PublicGroups implements OnInit {
   groups: PublicDictionaryGroupCard[] = [];
 
-  searchTerm = '';
-  sortBy: 'name' | 'wordCount' | 'popular' = 'name';
+  filteredGroups: PublicDictionaryGroupCard[] = [];
+
+  filter: GroupFilterState = {
+    searchTerm: '',
+    sourceLanguage: '',
+    targetLanguage: '',
+    visibility: 'ALL',
+    minWordCount: null,
+    maxWordCount: null,
+    sortBy: 'name',
+    sortDescending: false,
+  };
+
+  sourceLanguages: string[] = [];
+  targetLanguages: string[] = [];
 
   constructor(private groupService: DictionaryGroupService, private modalService: NgbModal,
               private alertService: AlertService, private cdr: ChangeDetectorRef,) {}
@@ -31,6 +45,17 @@ export class PublicGroups implements OnInit {
     this.groupService.getPublicGroupCards().subscribe({
       next: (groups) => {
         this.groups = groups;
+
+        this.sourceLanguages = [
+          ...new Set(groups.map((group) => group.sourceLanguage)),
+        ].sort((a, b) => a.localeCompare(b, 'hu'));
+
+        this.targetLanguages = [
+          ...new Set(groups.map((group) => group.targetLanguage)),
+        ].sort((a, b) => a.localeCompare(b, 'hu'));
+
+        this.applyFilter(this.filter);
+
         this.cdr.markForCheck();
       },
       error: () =>
@@ -54,33 +79,80 @@ export class PublicGroups implements OnInit {
     });
   }
 
-  get filteredGroups(): PublicDictionaryGroupCard[] {
-    const search = this.searchTerm.trim().toLowerCase();
 
-    const groups = this.groups.filter((group) => {
-      if (!search) {
-        return true;
+  applyFilter(filter: GroupFilterState): void {
+    this.filter = filter;
+
+    const search = filter.searchTerm.trim().toLowerCase();
+
+    let result = this.groups.filter((group) => {
+
+      if (search) {
+        const matchesSearch =
+          group.name.toLowerCase().includes(search) ||
+          group.description?.toLowerCase().includes(search) ||
+          group.sourceLanguage.toLowerCase().includes(search) ||
+          group.targetLanguage.toLowerCase().includes(search) ||
+          group.ownerName.toLowerCase().includes(search);
+
+        if (!matchesSearch) {
+          return false;
+        }
       }
 
-      return (
-        group.name.toLowerCase().includes(search) ||
-        group.description?.toLowerCase().includes(search) ||
-        group.sourceLanguage.toLowerCase().includes(search) ||
-        group.targetLanguage.toLowerCase().includes(search) ||
-        group.ownerName.toLowerCase().includes(search)
-      );
+      if (
+        filter.sourceLanguage &&
+        group.sourceLanguage !== filter.sourceLanguage
+      ) {
+        return false;
+      }
+
+      if (
+        filter.targetLanguage &&
+        group.targetLanguage !== filter.targetLanguage
+      ) {
+        return false;
+      }
+
+      if (
+        filter.minWordCount !== null &&
+        group.wordCount < filter.minWordCount
+      ) {
+        return false;
+      }
+
+      if (
+        filter.maxWordCount !== null &&
+        group.wordCount > filter.maxWordCount
+      ) {
+        return false;
+      }
+
+      return true;
     });
 
-    return [...groups].sort((a, b) => {
-      if (this.sortBy === 'wordCount') {
-        return b.wordCount - a.wordCount;
+    result = [...result].sort((a, b) => {
+      let comparison = 0;
+
+      switch (filter.sortBy) {
+        case 'wordCount':
+          comparison = a.wordCount - b.wordCount;
+          break;
+
+        case 'popular':
+          comparison = a.addCount - b.addCount;
+          break;
+
+        case 'name':
+        default:
+          comparison = a.name.localeCompare(b.name, 'hu');
+          break;
       }
 
-      if (this.sortBy === 'popular') {
-        return b.addCount - a.addCount;
-      }
-
-      return a.name.localeCompare(b.name, 'hu');
+      return filter.sortDescending ? -comparison : comparison;
     });
+
+    this.filteredGroups = result;
   }
+
 }

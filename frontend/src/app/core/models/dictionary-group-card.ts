@@ -17,6 +17,8 @@ export interface DictionaryGroupCard {
 
   learnedWordCount: number;
 
+  createdAt: string;
+
   lastUsedAt: string | null;
 
   quizSettings: QuizSettings;

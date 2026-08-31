@@ -108,6 +108,8 @@ public class DictionaryGroupMapper {
 
                 learnedWordCount,
 
+                group.getCreatedAt(),
+
                 group.getLastUsedAt(),
 
                 toQuizSettingsResponse(group)

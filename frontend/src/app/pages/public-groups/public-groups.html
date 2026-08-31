@@ -1,26 +1,20 @@
 <div class="container mt-4">
-  <div class="row mb-4 align-items-center g-2">
-    <div class="col-md">
-      <h1 class="h3 fw-bold mb-0">
+  <div class="row mb-4 align-items-center g-3">
+    <div class="col-12">
+      <h1 class="h3 fw-bold mb-3">
         Publikus csoportok
       </h1>
-    </div>
 
-    <div class="col-md">
-      <input
-        class="form-control"
-        placeholder="Csoport keresése..."
-        [(ngModel)]="searchTerm"
+      <app-group-filter
+        [sourceLanguages]="sourceLanguages"
+        [targetLanguages]="targetLanguages"
+        [showVisibility]="false"
+        [showPopularity]="true"
+        (filterChange)="applyFilter($event)"
       />
+
     </div>
 
-    <div class="col-md-auto">
-      <select class="form-select" [(ngModel)]="sortBy">
-        <option value="name">Név szerint</option>
-        <option value="wordCount">Szópárok száma</option>
-        <option value="popular">Legnépszerűbb</option>
-      </select>
-    </div>
   </div>
 
   <div class="row g-4">

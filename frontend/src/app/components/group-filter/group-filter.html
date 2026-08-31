@@ -1,0 +1,318 @@
+<div class="filter-wrapper">
+
+  <!-- Kereső + szűrő gomb -->
+  <div class="filter-toolbar">
+
+    <div class="search-wrapper flex-grow-1">
+
+      <i class="bi bi-search search-icon"></i>
+
+      <input
+        type="text"
+        class="form-control search-input"
+        placeholder="Csoport keresése..."
+        [(ngModel)]="filter.searchTerm"
+        (ngModelChange)="onFilterChange()"
+      />
+
+    </div>
+
+
+    <button
+      type="button"
+      class="btn btn-outline-secondary filter-button"
+      [class.active]="hasActiveFilters"
+      (click)="toggle()"
+    >
+
+      <i class="bi bi-funnel me-1"></i>
+
+      Szűrők
+
+      @if (hasActiveFilters) {
+        <span class="filter-active-dot"></span>
+      }
+
+    </button>
+
+  </div>
+
+
+  <!-- Szűrőpanel -->
+  @if (isOpen) {
+
+    <div class="filter-panel mt-3">
+
+      <div class="filter-header">
+
+        <div>
+
+          <h5 class="mb-1">
+            Szűrés
+          </h5>
+
+          <small class="text-muted">
+            Szűkítsd a megjelenített csoportokat
+          </small>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn btn-sm btn-link text-muted"
+          (click)="toggle()"
+        >
+
+          <i class="bi bi-x-lg"></i>
+
+        </button>
+
+      </div>
+
+
+      <div class="row g-3">
+
+        <!-- Forrásnyelv -->
+        <div class="col-md-6 col-lg-4">
+
+          <label class="form-label fw-semibold">
+            Forrásnyelv
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="filter.sourceLanguage"
+            (ngModelChange)="onFilterChange()"
+          >
+
+            <option value="">
+              Mindegy
+            </option>
+
+            @for (
+              language of sourceLanguages;
+              track language
+              ) {
+
+              <option [value]="language">
+                {{ language }}
+              </option>
+
+            }
+
+          </select>
+
+        </div>
+
+
+        <!-- Célnyelv -->
+        <div class="col-md-6 col-lg-4">
+
+          <label class="form-label fw-semibold">
+            Célnyelv
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="filter.targetLanguage"
+            (ngModelChange)="onFilterChange()"
+          >
+
+            <option value="">
+              Mindegy
+            </option>
+
+            @for (
+              language of targetLanguages;
+              track language
+              ) {
+
+              <option [value]="language">
+                {{ language }}
+              </option>
+
+            }
+
+          </select>
+
+        </div>
+
+
+        <!-- Láthatóság -->
+        @if (showVisibility) {
+
+          <div class="col-md-6 col-lg-4">
+
+            <label class="form-label fw-semibold">
+              Láthatóság
+            </label>
+
+            <select
+              class="form-select"
+              [(ngModel)]="filter.visibility"
+              (ngModelChange)="onFilterChange()"
+            >
+
+              <option value="ALL">
+                Mindegy
+              </option>
+
+              <option value="PUBLIC">
+                Nyilvános
+              </option>
+
+              <option value="PRIVATE">
+                Privát
+              </option>
+
+            </select>
+
+          </div>
+
+        }
+
+
+        <!-- Minimum szópár -->
+        <div class="col-md-6 col-lg-4">
+
+          <label class="form-label fw-semibold">
+            Minimum szópár
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            min="0"
+            placeholder="Pl. 10"
+            [(ngModel)]="filter.minWordCount"
+            (ngModelChange)="onFilterChange()"
+          />
+
+        </div>
+
+
+        <!-- Maximum szópár -->
+        <div class="col-md-6 col-lg-4">
+
+          <label class="form-label fw-semibold">
+            Maximum szópár
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            min="0"
+            placeholder="Pl. 500"
+            [(ngModel)]="filter.maxWordCount"
+            (ngModelChange)="onFilterChange()"
+          />
+
+        </div>
+
+
+        <!-- Rendezés -->
+        <div class="col-md-6 col-lg-4">
+
+          <label class="form-label fw-semibold">
+            Rendezés
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="filter.sortBy"
+            (ngModelChange)="onFilterChange()"
+          >
+
+            <option value="name">
+              Név szerint
+            </option>
+
+            <option value="wordCount">
+              Szópárok száma
+            </option>
+
+            <option value="lastUsed">
+              Legutóbb használva
+            </option>
+
+            <option value="created">
+              Létrehozás dátuma
+            </option>
+
+            @if (showPopularity) {
+
+              <option value="popular">
+                Legnépszerűbb
+              </option>
+
+            }
+
+          </select>
+
+        </div>
+
+
+        <!-- Irány -->
+        <div class="col-md-6 col-lg-4">
+
+          <label class="form-label fw-semibold">
+            Rendezési irány
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="filter.sortDescending"
+            (ngModelChange)="onFilterChange()"
+          >
+
+            <option [ngValue]="false">
+              Növekvő
+            </option>
+
+            <option [ngValue]="true">
+              Csökkenő
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- Footer -->
+      <div class="filter-footer">
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="clearFilters()"
+        >
+
+          <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+          Szűrők törlése
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="toggle()"
+        >
+
+          <i class="bi bi-check-lg me-1"></i>
+
+          Kész
+
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

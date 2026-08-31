@@ -1,18 +1,25 @@
 <div class="container mt-4">
-  <div class="row mb-4 align-items-center">
+  <div class="row mb-4 align-items-start g-3">
 
     <div class="col-md-auto">
       <button class="btn btn-primary" (click)="openCreateModal()">
-        <i class="bi bi-plus-lg"></i>
-
+        <i class="bi bi-plus-lg me-1"></i>
         Új csoport
       </button>
     </div>
 
     <div class="col-md">
-      <input class="form-control" placeholder="Csoport keresése..." />
+      <app-group-filter
+        [sourceLanguages]="sourceLanguages"
+        [targetLanguages]="targetLanguages"
+        [showVisibility]="true"
+        [showPopularity]="false"
+        (filterChange)="applyFilter($event)"
+      ></app-group-filter>
+
     </div>
 
+    <!--
     <div class="col-md-auto">
       <select class="form-select">
         <option>Név szerint</option>
@@ -22,17 +29,31 @@
         <option>Szópárok száma</option>
       </select>
     </div>
-
+-->
 
   </div>
 
 
 
   <div class="row g-4">
-    @for (group of groups; track group.id) {
+    @for (group of filteredGroups; track group.id) {
       <div class="col-md-4">
         <app-group-card [group]="group" (delete)="deleteGroup($event)"></app-group-card>
       </div>
     }
+
+
+    @if (filteredGroups.length === 0) {
+      <div class="col-12">
+        <div class="text-center text-muted py-5">
+          <i class="bi bi-search fs-1"></i>
+
+          <p class="mt-3 mb-0">
+            Nincs a szűrésnek megfelelő csoport.
+          </p>
+        </div>
+      </div>
+    }
+
   </div>
 </div>

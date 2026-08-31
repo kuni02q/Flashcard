@@ -34,6 +34,7 @@ public class DictionaryGroupCardResponse {
 
     private int learnedWordCount;
 
+    private LocalDateTime createdAt;
 
     private LocalDateTime lastUsedAt;
 
